@@ -1,8 +1,7 @@
+//--> Module dependencies.<--
 var express = require("express");
 var router = express.Router();
-var Item = require("../models/items/item");
 var db = require("../connection");
-db.sequelize.sync();
 
 //--> routes for cart <--
 
@@ -11,11 +10,12 @@ router.get("/list/:id", function (req, res, next) {
   let personId = req.params.id;
   db.Cart.findOne({
     where: {
-      id: personId,
+      resignId: personId,
     },
   }).then(
     (list) => {
       let listofItems = [];
+      let finalList = [];
       for (i of list) {
         db.Item.findOne({
           where: {
@@ -31,7 +31,7 @@ router.get("/list/:id", function (req, res, next) {
           }
         );
       }
-      res.send(listofItems);
+      res.send(finalList);
     },
     () => {
       res.status(400).send();
@@ -51,7 +51,7 @@ router.get("/price/:id", function (req, res, next) {
       for (i of list) {
         db.Item.findOne({
           where: {
-            id: i,
+            resignId: i,
           },
         }).then(
           (item) => {
@@ -70,25 +70,21 @@ router.get("/price/:id", function (req, res, next) {
     }
   );
 });
+
+var Cart = db.Cart;
 //--> add items to cart list<--
-router.post("/add/:id", function (req, res, next) {
+router.post("/add", function (req, res, next) {
   let personId = req.params.id;
-  let body = _.pick(req.body, "id");
-  db.Cart.findOne({
+  let body = _.pick(req.body, "itemIds");
+  db.User.findOne({
     where: {
-      id: personId,
+      id: "1",
     },
-  }).then((Cart) => {
-    Cart.itemIds = Cart.itemIds.concat([body]).then(
-      (id) => {
-        res.send("Succefully item " + id + " added to like list.");
-      },
-      (err) => {
-        res.status(400).send({
-          error: "Please use correct writing rules.",
-        });
-      }
-    );
+  }).then((user) => {
+    db.Cart.create(body).then((cart) => {
+      user.setCart(cart);
+      res.send("Succesfully added.");
+    });
   });
 });
 
