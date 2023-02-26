@@ -5,6 +5,8 @@ var router = express.Router();
 
 //--> list all items that were added to cart list<--
 router.get("/cart", function (req, res, next) {});
+//--> get total price of all items that were added to cart list<--
+router.get("/price", function (req, res, next) {});
 //--> add items to cart list<--
 router.post("/cart", function (req, res, next) {});
 
