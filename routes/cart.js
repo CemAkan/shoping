@@ -30,27 +30,25 @@ router.get("/list/:id", function (req, res, next) {
 //--> get total price of all items that were added to cart list<--
 router.get("/price/:id", function (req, res, next) {
   let personId = req.params.id;
-  db.Cart.findOne({
+  db.Cart.findAll({
     where: {
-      id: personId,
+      userId: personId,
     },
   }).then(
-    (list) => {
+    (cart) => {
+      let a = 0;
       let total = 0;
-      for (i of list) {
+
+      for (i in cart) {
+        let itemId = cart[a].itemIds;
         db.Item.findOne({
           where: {
-            resignId: i,
+            id: itemId,
           },
-        }).then(
-          (item) => {
-            objItem = JSON.parse(item);
-            total = total + objItem.price;
-          },
-          () => {
-            res.status(400).send();
-          }
-        );
+        }).then((item) => {
+          total = total + item.price;
+        });
+        a = a + 1;
       }
       res.send(total);
     },
