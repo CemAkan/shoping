@@ -1,3 +1,4 @@
+//--> Module dependencies.<--
 var express = require("express");
 var app = express();
 var router = express.Router();
@@ -8,16 +9,18 @@ const crypto = require("crypto");
 var db = require("../connection");
 
 //--> associations <--
+//cart
 db.User.hasMany(db.Cart);
 db.Cart.belongsTo(db.User);
 
+//like
 db.User.hasOne(db.Like);
 db.Like.belongsTo(db.User);
 
 // --> cyrpto <--
 const hashAlgo = "sha256";
 
-//--> routes for user <--
+//--> METHODS FOR /user <--
 
 //--> list all user <--
 router.get("/list", function (req, res, next) {
@@ -53,6 +56,7 @@ router.post("/sign-in", function (req, res, next) {
     };
 });
 
+// set to variables
 var Like = db.Like;
 var Cart = db.Cart;
 
@@ -155,4 +159,5 @@ router.delete("/delete/:id", function (req, res, next) {
   );
 });
 
+//exporting
 module.exports = router;
