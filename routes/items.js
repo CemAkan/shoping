@@ -11,7 +11,7 @@ router.get("/list", function (req, res, next) {
 });
 //--> Add a item <--
 router.post("/add", function (req, res, next) {
-  let body = _.pick(req.body, "name", "price");
+  let body = req.body;
 
   db.Item.create(body).then(
     (item) => {

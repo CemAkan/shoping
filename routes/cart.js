@@ -3,6 +3,12 @@ var express = require("express");
 var router = express.Router();
 var db = require("../connection");
 
+//--> associations <--
+
+//like
+db.User.hasOne(db.Like);
+db.Like.belongsTo(db.User);
+
 //--> routes for cart <--
 
 //--> list all items that were added to cart list<--
