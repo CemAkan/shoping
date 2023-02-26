@@ -36,21 +36,26 @@ router.get("/list/:id", function (req, res, next) {
       res.status(400).send();
     }
   );
-}),
-  //--> add items to like list<--
-  router.post("/add/:id", function (req, res, next) {
-    // let personId = req.params.id;
-    // let body = _.pick(req.body, "id");
-    // db.Like.create(body).then(
-    //   (id) => {
-    //     res.send("Succefully item " + id + " added to like list.");
-    //   },
-    //   (err) => {
-    //     res.status(400).send({
-    //       error: "Please use correct writing rules.",
-    //     });
-    //   }
-    // );
-  });
+});
 
+// set to variables
+var Like = db.Like;
+
+//--> add items to like list<--
+router.post("/add/:id", function (req, res, next) {
+  let personId = req.params.id;
+  let body = req.body;
+  db.User.findOne({
+    where: {
+      id: personId,
+    },
+  }).then((user) => {
+    db.Like.create(body).then((like) => {
+      user.setLike(like);
+      res.send("Succesfully added.");
+    });
+  });
+});
+
+//exporting
 module.exports = router;

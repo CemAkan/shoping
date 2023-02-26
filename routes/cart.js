@@ -1,4 +1,4 @@
-//--> Module dependencies.<--
+//--> Module dependencies <--
 var express = require("express");
 var router = express.Router();
 var db = require("../connection");
@@ -71,14 +71,16 @@ router.get("/price/:id", function (req, res, next) {
   );
 });
 
+// set to variables
 var Cart = db.Cart;
+
 //--> add items to cart list<--
-router.post("/add", function (req, res, next) {
+router.post("/add/:id", function (req, res, next) {
   let personId = req.params.id;
-  let body = _.pick(req.body, "itemIds");
+  let body = req.body;
   db.User.findOne({
     where: {
-      id: "1",
+      id: personId,
     },
   }).then((user) => {
     db.Cart.create(body).then((cart) => {
@@ -88,4 +90,5 @@ router.post("/add", function (req, res, next) {
   });
 });
 
+//exporting
 module.exports = router;
