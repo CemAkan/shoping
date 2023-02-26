@@ -8,29 +8,19 @@ var db = require("../connection");
 //--> list all items that were added to like list <--
 router.get("/list/:id", function (req, res, next) {
   let personId = req.params.id;
-  db.Like.findOne({
+  db.Like.findAll({
     where: {
-      id: personId,
+      userId: personId,
     },
   }).then(
     (list) => {
-      let listofItems = [];
-      for (i of list) {
-        db.Item.findOne({
-          where: {
-            id: i,
-          },
-        }).then(
-          (item) => {
-            objItem = JSON.parse(item);
-            finalList = listofItems.push(objItem.name);
-          },
-          () => {
-            res.status(400).send();
-          }
-        );
+      let a = 0;
+      let listofLike = [];
+      for (i in list) {
+        listofLike.push(list[a].itemIds);
+        a = a + 1;
       }
-      res.send(listofItems);
+      res.send(listofLike);
     },
     () => {
       res.status(400).send();
