@@ -1,11 +1,11 @@
+//--> Module dependencies.<--
 var express = require("express");
 var router = express.Router();
 var db = require("../connection");
-db.sequelize.sync();
 
-// //--> routes for like <--
+//--> routes for like <--
 
-// //--> list all items that were added to like list <--
+//--> list all items that were added to like list <--
 router.get("/list/:id", function (req, res, next) {
   let personId = req.params.id;
   db.Like.findOne({

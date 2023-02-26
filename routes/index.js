@@ -1,7 +1,7 @@
+//--> Module dependencies.<--
 var express = require("express");
 var router = express.Router();
 var db = require("../connection");
-db.sequelize.sync();
 
 /* GET home page. */
 router.get("/", function (req, res, next) {

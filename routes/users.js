@@ -7,10 +7,9 @@ app.use(bodyParser.json());
 var _ = require("underscore");
 const crypto = require("crypto");
 var db = require("../connection");
-db.sequelize.sync();
 
 //--> associations <--
-db.User.hasOne(db.Cart);
+db.User.hasMany(db.Cart);
 db.Cart.belongsTo(db.User);
 
 db.User.hasOne(db.Like);
@@ -75,9 +74,9 @@ router.post("/sign-up", function (req, res, next) {
         db.Like.create({}).then((emp) => {
           resign.setLike(emp);
         });
-        db.Cart.create({}).then((emp) => {
-          resign.setCart(emp);
-        });
+        // db.Cart.create({}).then((emp) => {
+        //   resign.setCart(emp);
+        // });
         res.json(resign);
       },
       (err) => {
