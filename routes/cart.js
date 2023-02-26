@@ -1,14 +1,15 @@
 var express = require("express");
 var router = express.Router();
 var Item = require("../models/items/item");
-var Cart = require("../models/cart/cart");
+var db = require("../connection");
+db.sequelize.sync();
 
 //--> routes for cart <--
 
 //--> list all items that were added to cart list<--
 router.get("/list", function (req, res, next) {
   let personId = req.params.id;
-  Cart.findOne({
+  db.Cart.findOne({
     where: {
       id: personId,
     },
@@ -16,7 +17,7 @@ router.get("/list", function (req, res, next) {
     (list) => {
       let listofItems = [];
       for (i of list) {
-        Item.findOne({
+        db.Item.findOne({
           where: {
             id: i,
           },
@@ -40,7 +41,7 @@ router.get("/list", function (req, res, next) {
 //--> get total price of all items that were added to cart list<--
 router.get("/price", function (req, res, next) {
   let personId = req.params.id;
-  Cart.findOne({
+  db.Cart.findOne({
     where: {
       id: personId,
     },
@@ -48,7 +49,7 @@ router.get("/price", function (req, res, next) {
     (list) => {
       let total = 0;
       for (i of list) {
-        Item.findOne({
+        db.Item.findOne({
           where: {
             id: i,
           },

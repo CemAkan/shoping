@@ -1,10 +1,12 @@
 var express = require("express");
 var router = express.Router();
-var Item = require("../models/items/item");
+var db = require("../connection");
+
+db.sequelize.sync();
 
 //--> List all items <--
 router.get("/list", function (req, res, next) {
-  Item.findAll().then((items) => {
+  db.Item.findAll().then((items) => {
     res.json(items);
   });
 });
@@ -12,7 +14,7 @@ router.get("/list", function (req, res, next) {
 router.post("/add", function (req, res, next) {
   let body = _.pick(req.body, "name", "price");
 
-  Item.create(body).then(
+  db.Item.create(body).then(
     (item) => {
       res.json(item);
     },
@@ -37,7 +39,7 @@ router.put("/update", function (req, res, next) {
     attributes.price = body.price;
   }
 
-  Item.findOne({
+  db.Item.findOne({
     where: {
       id: itemId,
     },
@@ -66,7 +68,7 @@ router.put("/update", function (req, res, next) {
 //--> Delete a item <--
 router.delete("/delete", function (req, res, next) {
   let itemId = req.params.id;
-  Item.destroy({
+  db.Item.destroy({
     where: {
       id: itemId,
     },

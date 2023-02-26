@@ -6,6 +6,15 @@ var bodyParser = require("body-parser");
 app.use(bodyParser.json());
 var _ = require("underscore");
 const crypto = require("crypto");
+var db = require("../connection");
+db.sequelize.sync();
+
+//--> associations <--
+db.User.hasOne(db.Cart);
+db.Cart.belongsTo(db.User);
+
+db.User.hasOne(db.Like);
+db.Like.belongsTo(db.User);
 
 // --> cyrpto <--
 const hashAlgo = "sha256";
@@ -14,7 +23,7 @@ const hashAlgo = "sha256";
 
 //--> list all user <--
 router.get("/list", function (req, res, next) {
-  User.findAll().then((resign) => {
+  db.User.findAll().then((resign) => {
     res.json(resign);
   });
 });
@@ -26,7 +35,7 @@ router.post("/sign-in", function (req, res, next) {
   //--> part of encrypting the password <--
   const text = body.password;
   const hash = crypto.createHash(hashAlgo).update(text).digest("hex");
-  User.findOne({
+  db.User.findOne({
     where: {
       username: body.username,
       password: hash,
@@ -58,7 +67,7 @@ router.post("/sign-up", function (req, res, next) {
   if (text.length < 8) {
     res.send("Please use a long password.");
   } else {
-    User.create(body).then(
+    db.User.create(body).then(
       (resign) => {
         res.json(resign);
       },
@@ -89,7 +98,7 @@ router.put("/update", function (req, res, next) {
     attributes.password = body.password;
   }
 
-  User.findOne({
+  db.User.findOne({
     where: {
       id: personId,
     },
@@ -119,7 +128,7 @@ router.put("/update", function (req, res, next) {
 //--> delete a user <--
 router.delete("/delete", function (req, res, next) {
   let personId = req.params.id;
-  User.destroy({
+  db.User.destroy({
     where: {
       id: personId,
     },
