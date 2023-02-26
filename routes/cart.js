@@ -7,7 +7,7 @@ db.sequelize.sync();
 //--> routes for cart <--
 
 //--> list all items that were added to cart list<--
-router.get("/list", function (req, res, next) {
+router.get("/list/:id", function (req, res, next) {
   let personId = req.params.id;
   db.Cart.findOne({
     where: {
@@ -39,7 +39,7 @@ router.get("/list", function (req, res, next) {
   );
 });
 //--> get total price of all items that were added to cart list<--
-router.get("/price", function (req, res, next) {
+router.get("/price/:id", function (req, res, next) {
   let personId = req.params.id;
   db.Cart.findOne({
     where: {
@@ -71,6 +71,25 @@ router.get("/price", function (req, res, next) {
   );
 });
 //--> add items to cart list<--
-router.post("/add", function (req, res, next) {});
+router.post("/add/:id", function (req, res, next) {
+  let personId = req.params.id;
+  let body = _.pick(req.body, "id");
+  db.Cart.findOne({
+    where: {
+      id: personId,
+    },
+  }).then((Cart) => {
+    Cart.itemIds = Cart.itemIds.concat([body]).then(
+      (id) => {
+        res.send("Succefully item " + id + " added to like list.");
+      },
+      (err) => {
+        res.status(400).send({
+          error: "Please use correct writing rules.",
+        });
+      }
+    );
+  });
+});
 
 module.exports = router;

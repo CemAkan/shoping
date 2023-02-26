@@ -6,7 +6,7 @@ db.sequelize.sync();
 // //--> routes for like <--
 
 // //--> list all items that were added to like list <--
-router.get("/list", function (req, res, next) {
+router.get("/list/:id", function (req, res, next) {
   let personId = req.params.id;
   db.Like.findOne({
     where: {
@@ -38,7 +38,7 @@ router.get("/list", function (req, res, next) {
   );
 }),
   //--> add items to like list<--
-  router.post("/add", function (req, res, next) {
+  router.post("/add/:id", function (req, res, next) {
     // let personId = req.params.id;
     // let body = _.pick(req.body, "id");
     // db.Like.create(body).then(

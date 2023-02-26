@@ -55,6 +55,9 @@ router.post("/sign-in", function (req, res, next) {
     };
 });
 
+var Like = db.Like;
+var Cart = db.Cart;
+
 //--> add a new user <--
 router.post("/sign-up", function (req, res, next) {
   let body = _.pick(req.body, "username", "email", "password");
@@ -69,6 +72,12 @@ router.post("/sign-up", function (req, res, next) {
   } else {
     db.User.create(body).then(
       (resign) => {
+        db.Like.create({}).then((emp) => {
+          resign.setLike(emp);
+        });
+        db.Cart.create({}).then((emp) => {
+          resign.setCart(emp);
+        });
         res.json(resign);
       },
       (err) => {
@@ -81,7 +90,7 @@ router.post("/sign-up", function (req, res, next) {
 });
 
 //--> update a user <--
-router.put("/update", function (req, res, next) {
+router.put("/update/:id", function (req, res, next) {
   let personId = req.params.id;
   let body = _.pick(req.body, "username", "email", "password");
   let attributes = {};
@@ -126,7 +135,7 @@ router.put("/update", function (req, res, next) {
 });
 
 //--> delete a user <--
-router.delete("/delete", function (req, res, next) {
+router.delete("/delete/:id", function (req, res, next) {
   let personId = req.params.id;
   db.User.destroy({
     where: {

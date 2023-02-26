@@ -26,7 +26,7 @@ router.post("/add", function (req, res, next) {
   );
 });
 //--> Update a item <--
-router.put("/update", function (req, res, next) {
+router.put("/update/:id", function (req, res, next) {
   let itemId = req.params.id;
   let body = _.pick(req.body, "name", "price");
   let attributes = {};
@@ -66,7 +66,7 @@ router.put("/update", function (req, res, next) {
   );
 });
 //--> Delete a item <--
-router.delete("/delete", function (req, res, next) {
+router.delete("/delete/:id", function (req, res, next) {
   let itemId = req.params.id;
   db.Item.destroy({
     where: {
