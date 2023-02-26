@@ -8,30 +8,19 @@ var db = require("../connection");
 //--> list all items that were added to cart list<--
 router.get("/list/:id", function (req, res, next) {
   let personId = req.params.id;
-  db.Cart.findOne({
+  db.Cart.findAll({
     where: {
-      resignId: personId,
+      userId: personId,
     },
   }).then(
-    (list) => {
-      let listofItems = [];
-      let finalList = [];
-      for (i of list) {
-        db.Item.findOne({
-          where: {
-            id: i,
-          },
-        }).then(
-          (item) => {
-            objItem = JSON.parse(item);
-            finalList = listofItems.push(objItem.name);
-          },
-          () => {
-            res.status(400).send();
-          }
-        );
+    (cart) => {
+      let a = 0;
+      let listofCart = [];
+      for (i in cart) {
+        listofCart.push(cart[a].itemIds);
+        a = a + 1;
       }
-      res.send(finalList);
+      res.send(listofCart);
     },
     () => {
       res.status(400).send();
