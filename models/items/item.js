@@ -8,7 +8,7 @@ module.exports = (sequelize, Sequelize) => {
       },
     },
     price: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
       allowNUll: false,
     },
   });
