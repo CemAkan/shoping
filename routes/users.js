@@ -14,10 +14,8 @@ const hashAlgo = "sha256";
 
 //--> list all user <--
 router.get("/list", function (req, res, next) {
-  app.get("/users/list", (req, res) => {
-    User.findAll().then((resign) => {
-      res.json(resign);
-    });
+  User.findAll().then((resign) => {
+    res.json(resign);
   });
 });
 
