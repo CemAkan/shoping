@@ -1,7 +1,6 @@
 var express = require("express");
 var app = express();
 var router = express.Router();
-var User = require("../models/user/user");
 var bodyParser = require("body-parser");
 app.use(bodyParser.json());
 var _ = require("underscore");
