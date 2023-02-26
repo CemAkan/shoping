@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-var likeList = require("../models/likeList.js/likeList");
+var likeList = require("../models/likeList/likeList");
 var Item = require("../models/items/item");
 //--> routes for like <--
 
@@ -40,18 +40,18 @@ router.get("/list", function (req, res, next) {
 }),
   //--> add items to like list<--
   router.post("/add", function (req, res, next) {
-    let personId = req.params.id;
-    let body = _.pick(req.body, "id");
-    User.create(body).then(
-      (id) => {
-        res.send("Succefully item " + id + " added to like list.");
-      },
-      (err) => {
-        res.status(400).send({
-          error: "Please use correct writing rules.",
-        });
-      }
-    );
+    // let personId = req.params.id;
+    // let body = _.pick(req.body, "id");
+    // likeList.create(body).then(
+    //   (id) => {
+    //     res.send("Succefully item " + id + " added to like list.");
+    //   },
+    //   (err) => {
+    //     res.status(400).send({
+    //       error: "Please use correct writing rules.",
+    //     });
+    //   }
+    // );
   });
 
 module.exports = router;
