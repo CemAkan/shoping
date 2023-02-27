@@ -24,3 +24,17 @@ const cartModel = cart(sequelize, Sequelize);
 const categoryModel = category(sequelize, Sequelize);
 const likeModel = like(sequelize, Sequelize);
 const itemModel = item(sequelize, Sequelize);
+
+//--> Associations <--
+
+// CART <-> USER
+userModel.hasMany(cartModel, { foreignKey: "customerId" });
+cartModel.belongsTo(userModel, { foreignKey: "customerId" });
+
+// ITEM <-> CATEGORY
+categoryModel.hasMany(itemModel, { foreignKey: "categoryId" });
+itemModel.belongsTo(categoryModel, { foreignKey: "categoryId" });
+
+// LIKE <-> USER
+userModel.hasMany(likeModel, { foreignKey: "customerId" });
+likeModel.belongsTo(userModel, { foreignKey: "customerId" });
