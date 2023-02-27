@@ -38,9 +38,9 @@ router.post("/sign-in", function (req, res, next) {
     })
     .then((todos) => {
       if (todos != null) {
-        res.send("You succesfully logined.");
+        res.send(true);
       } else {
-        res.send("You can not login, please try again.");
+        res.send(false);
       }
     }),
     () => {
