@@ -4,7 +4,7 @@ var router = express.Router();
 var db = require("../connection");
 
 //--> associations <--
-db.Category.hasOne(db.Item, { foreignKey: "categoryId" });
+db.Category.hasMany(db.Item, { foreignKey: "categoryId" });
 db.Item.belongsTo(db.Category, { foreignKey: "categoryId" });
 
 //--> List all items <--
