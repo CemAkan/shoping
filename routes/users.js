@@ -9,6 +9,7 @@ const crypto = require("crypto");
 var db = require("../connection");
 
 //--> associations <--
+
 //cart
 db.User.hasMany(db.Cart, { foreignKey: "customerId" });
 db.Cart.belongsTo(db.User, { foreignKey: "customerId" });
@@ -34,6 +35,7 @@ router.post("/sign-in", function (req, res, next) {
   let body = _.pick(req.body, "username", "password");
 
   //--> part of encrypting the password <--
+
   const text = body.password;
   const hash = crypto.createHash(hashAlgo).update(text).digest("hex");
   db.User.findOne({
@@ -74,12 +76,6 @@ router.post("/sign-up", function (req, res, next) {
   } else {
     db.User.create(body).then(
       (resign) => {
-        db.Like.create({}).then((emp) => {
-          resign.setLike(emp);
-        });
-        // db.Cart.create({}).then((emp) => {
-        //   resign.setCart(emp);
-        // });
         res.json(resign);
       },
       (err) => {
