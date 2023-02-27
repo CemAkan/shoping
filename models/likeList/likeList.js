@@ -4,7 +4,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.INTEGER,
       allowNUll: true,
     },
-    userId: {
+    customerId: {
       type: Sequelize.INTEGER,
       allowNull: false,
       references: {
