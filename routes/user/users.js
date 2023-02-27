@@ -6,8 +6,8 @@ var bodyParser = require("body-parser");
 app.use(bodyParser.json());
 var _ = require("underscore");
 const crypto = require("crypto");
-var db = require("../database/database");
-const checkAuth = require("../middleware/middleware");
+var db = require("../../database/database");
+const checkAuth = require("../../middleware/middleware");
 
 // --> cyrpto <--
 const hashAlgo = "sha256";
@@ -15,7 +15,7 @@ const hashAlgo = "sha256";
 //--> METHODS FOR /user <--
 
 //--> list all user <--
-router.get("/list", function (req, res, next) {
+router.get("/list", checkAuth, function (req, res, next) {
   db.userModel.findAll().then((resign) => {
     res.json(resign);
   });
