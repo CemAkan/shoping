@@ -1,3 +1,5 @@
+const { userRoleTypes } = require("../../helpers/roleTypes");
+
 module.exports = (sequelize, Sequelize) => {
   return sequelize.define("user", {
     customerId: {
@@ -29,6 +31,17 @@ module.exports = (sequelize, Sequelize) => {
       validate: {
         len: [8, 100],
       },
+    },
+    role: {
+      type: Sequelize.STRING,
+      defaultValue: userRoleTypes.user,
+    },
+    access_token: {
+      type: Sequelize.STRING,
+    },
+    account_activity_status: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: true,
     },
   });
 };
