@@ -27,7 +27,11 @@ router.post("/add/:id", function (req, res, next) {
     },
   }).then(
     (category) => {
-      db.Item.create(body).then((item) => {
+      db.Item.create({
+        name: body.name,
+        price: body.price,
+        categoryId: category_Id,
+      }).then((item) => {
         category.addItems(item);
         res.send(body.name + " succesfully added.");
       });
