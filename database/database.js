@@ -17,3 +17,10 @@ const sequelize = new Sequelize(
     dialect: Database.development.dialect,
   }
 );
+
+//--> Sequelize to Models <--
+const userModel = user(sequelize, Sequelize);
+const cartModel = cart(sequelize, Sequelize);
+const categoryModel = category(sequelize, Sequelize);
+const likeModel = like(sequelize, Sequelize);
+const itemModel = item(sequelize, Sequelize);
