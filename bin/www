@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-var db = require("../connection");
+var db = require("../database/database");
 var app = require("../app");
 var debug = require("debug")("shoping-task:server");
 var http = require("http");
