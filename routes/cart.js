@@ -4,7 +4,7 @@ var router = express.Router();
 var db = require("../connection");
 
 //--> associations <--
-db.User.hasOne(db.Cart, { foreignKey: "customerId" });
+db.User.hasMany(db.Cart, { foreignKey: "customerId" });
 db.Cart.belongsTo(db.User, { foreignKey: "customerId" });
 //--> routes for cart <--
 
@@ -74,7 +74,7 @@ router.post("/add/:id", function (req, res, next) {
     },
   }).then((user) => {
     db.Cart.create(body).then((cart) => {
-      user.setCart(cart);
+      user.addCarts(cart);
       res.send("Succesfully added.");
     });
   });

@@ -4,7 +4,7 @@ var router = express.Router();
 var db = require("../connection");
 
 //--> associations <--
-db.User.hasOne(db.Like, { foreignKey: "customerId" });
+db.User.hasMany(db.Like, { foreignKey: "customerId" });
 db.Like.belongsTo(db.User, { foreignKey: "customerId" });
 
 //--> routes for like <--
@@ -45,7 +45,7 @@ router.post("/add/:id", function (req, res, next) {
     },
   }).then((user) => {
     db.Like.create(body).then((like) => {
-      user.setLike(like);
+      user.addLikes(like);
       res.send("Succesfully added.");
     });
   });
