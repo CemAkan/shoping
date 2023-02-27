@@ -28,7 +28,7 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false,
       references: {
         model: "categories",
-        key: "id",
+        key: "categoryId",
       },
     },
   });
