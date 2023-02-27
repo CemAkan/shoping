@@ -37,34 +37,37 @@ router.get("/price/:id", function (req, res, next) {
     where: {
       customerId: personId,
     },
-  }).then(
-    (cart) => {
-      let a = 0;
+  })
+    .then((cart) => {
       let total = 0;
+      let promises = [];
 
-      for (i in cart) {
-        let itemId = cart[a].itemIds;
-        db.Item.findOne({
+      cart.forEach((cartItem) => {
+        let itemId = cartItem.itemIds;
+        let promise = db.Item.findOne({
           where: {
             itemId: itemId,
           },
         }).then((item) => {
           total = total + item.price;
         });
-        a = a + 1;
-      }
-      res.send(total);
-    },
-    () => {
+        promises.push(promise);
+      });
+
+      Promise.all(promises).then(() => {
+        res.send(total.toString());
+      });
+    })
+    .catch((error) => {
+      console.error(error);
       res.status(400).send();
-    }
-  );
+    });
 });
 
 // set to variables
 var Cart = db.Cart;
 
-//--> add items to cart list<--
+//--> add items to cart list <--
 router.post("/add/:id", function (req, res, next) {
   let personId = req.params.id;
   let body = req.body;
