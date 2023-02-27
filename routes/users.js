@@ -10,12 +10,12 @@ var db = require("../connection");
 
 //--> associations <--
 //cart
-db.User.hasMany(db.Cart);
-db.Cart.belongsTo(db.User);
+db.User.hasMany(db.Cart, { foreignKey: "costumerId" });
+db.Cart.belongsTo(db.User, { foreignKey: "costumerId" });
 
 //like
-db.User.hasOne(db.Like);
-db.Like.belongsTo(db.User);
+db.User.hasOne(db.Like, { foreignKey: "costumerId" });
+db.Like.belongsTo(db.User, { foreignKey: "costumerId" });
 
 // --> cyrpto <--
 const hashAlgo = "sha256";

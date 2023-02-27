@@ -6,8 +6,8 @@ var db = require("../connection");
 //--> associations <--
 
 //like
-db.User.hasOne(db.Like);
-db.Like.belongsTo(db.User);
+db.User.hasOne(db.Like, { foreignKey: "costumerId" });
+db.Like.belongsTo(db.User, { foreignKey: "costumerId" });
 
 //--> routes for cart <--
 

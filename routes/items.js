@@ -3,18 +3,28 @@ var express = require("express");
 var router = express.Router();
 var db = require("../connection");
 
+//--> associations <--
+db.Category.hasOne(db.Item, { foreignKey: "categoryId" });
+db.Item.belongsTo(db.Category, { foreignKey: "categoryId" });
+
 //--> List all items <--
 router.get("/list", function (req, res, next) {
   db.Item.findAll().then((items) => {
     res.json(items);
   });
 });
+
+// set to variable
+var Item = db.Item;
+
 //--> Add a item <--
 router.post("/add", function (req, res, next) {
   let body = req.body;
 
   db.Item.create(body).then(
     (item) => {
+      // *******items link with categories********
+
       res.json(item);
     },
     (err) => {
@@ -24,6 +34,7 @@ router.post("/add", function (req, res, next) {
     }
   );
 });
+
 //--> Update a item <--
 router.put("/update/:id", function (req, res, next) {
   let itemId = req.params.id;
@@ -64,6 +75,7 @@ router.put("/update/:id", function (req, res, next) {
     }
   );
 });
+
 //--> Delete a item <--
 router.delete("/delete/:id", function (req, res, next) {
   let itemId = req.params.id;
