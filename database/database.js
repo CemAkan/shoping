@@ -38,3 +38,14 @@ itemModel.belongsTo(categoryModel, { foreignKey: "categoryId" });
 // LIKE <-> USER
 userModel.hasMany(likeModel, { foreignKey: "customerId" });
 likeModel.belongsTo(userModel, { foreignKey: "customerId" });
+
+//--> export <--
+module.exports = {
+  Sequelize,
+  sequelize,
+  userModel,
+  cartModel,
+  categoryModel,
+  likeModel,
+  itemModel,
+};
