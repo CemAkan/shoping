@@ -9,7 +9,7 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false,
       references: {
         model: "users",
-        key: "id",
+        key: "customerId",
       },
     },
   });
