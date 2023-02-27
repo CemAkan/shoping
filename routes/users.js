@@ -7,6 +7,7 @@ app.use(bodyParser.json());
 var _ = require("underscore");
 const crypto = require("crypto");
 var db = require("../database/database");
+const checkAuth = require("../middleware/middleware");
 
 // --> cyrpto <--
 const hashAlgo = "sha256";

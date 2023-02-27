@@ -2,6 +2,7 @@
 var express = require("express");
 var router = express.Router();
 var db = require("../database/database");
+const checkAuth = require("../middleware/middleware");
 
 //--> List all items <--
 router.get("/list", function (req, res, next) {
