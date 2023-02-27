@@ -18,14 +18,19 @@ router.get("/list", function (req, res, next) {
 var Item = db.Item;
 
 //--> Add a item <--
-router.post("/add", function (req, res, next) {
+router.post("/add/:id", function (req, res, next) {
+  let category_Id = req.params.id;
   let body = req.body;
-
-  db.Item.create(body).then(
-    (item) => {
-      // *******items link with categories********
-
-      res.json(item);
+  db.Category.findOne({
+    where: {
+      categoryId: category_Id,
+    },
+  }).then(
+    (category) => {
+      db.Item.create(body).then((item) => {
+        category.addItems(item);
+        res.send(body.name + " succesfully added.");
+      });
     },
     (err) => {
       res.status(400).send({
