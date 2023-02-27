@@ -57,7 +57,7 @@ var Cart = db.Cart;
 
 //--> add a new user <--
 router.post("/sign-up", function (req, res, next) {
-  let body = _.pick(req.body, "username", "email", "password");
+  let body = req.body;
 
   //--> part of encrypting the password <--
   const text = body.password;
