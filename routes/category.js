@@ -29,7 +29,7 @@ router.post("/add", function (req, res, next) {
 //--> Update a category <--
 router.put("/update/:id", function (req, res, next) {
   let category_Id = req.params.id;
-  let body = _.pick(req.body, "name", "price");
+  let body = req.body;
   let attributes = {};
 
   if (body.hasOwnProperty("name")) {
@@ -53,7 +53,7 @@ router.put("/update/:id", function (req, res, next) {
         );
       } else {
         res.status(404).send({
-          error: "Item can not found.",
+          error: "Category can not found.",
         });
       }
     },
@@ -63,7 +63,7 @@ router.put("/update/:id", function (req, res, next) {
   );
 });
 
-//--> Delete a item <--
+//--> Delete a category <--
 router.delete("/delete/:id", function (req, res, next) {
   let category_Id = req.params.id;
   db.Category.destroy({
