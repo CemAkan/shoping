@@ -1,21 +1,89 @@
 //--> Module dependencies.<--
 var express = require("express");
-var app = express();
 var router = express.Router();
-var bodyParser = require("body-parser");
-app.use(bodyParser.json());
-var _ = require("underscore");
 var db = require("../connection");
 
-//--> associations <--
+//--> List all categories <--
+router.get("/list", function (req, res, next) {
+  db.Category.findAll().then((categories) => {
+    res.json(categories);
+  });
+});
 
-//add
+//--> Add a category <--
+router.post("/add", function (req, res, next) {
+  let body = req.body;
 
-//update
+  db.Category.create(body).then(
+    (category) => {
+      res.json(category);
+    },
+    (err) => {
+      res.status(400).send({
+        error: "Please use correct writing rules.",
+      });
+    }
+  );
+});
 
-//delete
+//--> Update a category <--
+router.put("/update/:id", function (req, res, next) {
+  let category_Id = req.params.id;
+  let body = _.pick(req.body, "name", "price");
+  let attributes = {};
 
-//list all
+  if (body.hasOwnProperty("name")) {
+    attributes.name = body.name;
+  }
 
-//exporting
+  db.Category.findOne({
+    where: {
+      categoryId: category_Id,
+    },
+  }).then(
+    (category) => {
+      if (category) {
+        category.update(attributes).then(
+          (category) => {
+            res.json(category);
+          },
+          () => {
+            res.status(400).send();
+          }
+        );
+      } else {
+        res.status(404).send({
+          error: "Item can not found.",
+        });
+      }
+    },
+    () => {
+      res.status(500).send();
+    }
+  );
+});
+
+//--> Delete a item <--
+router.delete("/delete/:id", function (req, res, next) {
+  let category_Id = req.params.id;
+  db.Category.destroy({
+    where: {
+      categoryId: category_Id,
+    },
+  }).then(
+    (rowdeleted) => {
+      if (rowdeleted === 0) {
+        res.status(404).send({
+          error: "Item can not found.",
+        });
+      } else {
+        res.status(204).send();
+      }
+    },
+    () => {
+      res.status(500).send();
+    }
+  );
+});
+
 module.exports = router;
