@@ -4,11 +4,8 @@ var router = express.Router();
 var db = require("../connection");
 
 //--> associations <--
-
-//like
-db.User.hasOne(db.Like, { foreignKey: "costumerId" });
-db.Like.belongsTo(db.User, { foreignKey: "costumerId" });
-
+db.User.hasOne(db.Cart, { foreignKey: "customerId" });
+db.Cart.belongsTo(db.User, { foreignKey: "customerId" });
 //--> routes for cart <--
 
 //--> list all items that were added to cart list<--
