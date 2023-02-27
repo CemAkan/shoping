@@ -13,7 +13,7 @@ router.get("/list/:id", function (req, res, next) {
   let personId = req.params.id;
   db.Cart.findAll({
     where: {
-      costumerId: personId,
+      customerId: personId,
     },
   }).then(
     (cart) => {
@@ -35,7 +35,7 @@ router.get("/price/:id", function (req, res, next) {
   let personId = req.params.id;
   db.Cart.findAll({
     where: {
-      costumerId: personId,
+      customerId: personId,
     },
   }).then(
     (cart) => {
@@ -70,7 +70,7 @@ router.post("/add/:id", function (req, res, next) {
   let body = req.body;
   db.User.findOne({
     where: {
-      costumerId: personId,
+      customerId: personId,
     },
   }).then((user) => {
     db.Cart.create(body).then((cart) => {
