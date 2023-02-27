@@ -1,15 +1,12 @@
 module.exports = (sequelize, Sequelize) => {
   return sequelize.define("user", {
-    costumerId: {
+    id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true,
       readOnly: true,
       allowNUll: false,
       unique: true,
-      validate: {
-        len: [1, 10],
-      },
     },
     username: {
       type: Sequelize.STRING,
