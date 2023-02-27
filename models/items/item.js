@@ -19,9 +19,10 @@ module.exports = (sequelize, Sequelize) => {
       },
     },
     price: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.FLOAT,
       allowNUll: false,
     },
+    //foreign key
     categoryId: {
       type: Sequelize.INTEGER,
       allowNull: false,
