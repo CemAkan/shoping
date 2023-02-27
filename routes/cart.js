@@ -16,7 +16,7 @@ router.get("/list/:id", function (req, res, next) {
   let personId = req.params.id;
   db.Cart.findAll({
     where: {
-      userId: personId,
+      costumerId: personId,
     },
   }).then(
     (cart) => {
@@ -38,7 +38,7 @@ router.get("/price/:id", function (req, res, next) {
   let personId = req.params.id;
   db.Cart.findAll({
     where: {
-      userId: personId,
+      costumerId: personId,
     },
   }).then(
     (cart) => {
@@ -49,7 +49,7 @@ router.get("/price/:id", function (req, res, next) {
         let itemId = cart[a].itemIds;
         db.Item.findOne({
           where: {
-            id: itemId,
+            itemId: itemId,
           },
         }).then((item) => {
           total = total + item.price;
@@ -73,7 +73,7 @@ router.post("/add/:id", function (req, res, next) {
   let body = req.body;
   db.User.findOne({
     where: {
-      id: personId,
+      costumerId: personId,
     },
   }).then((user) => {
     db.Cart.create(body).then((cart) => {

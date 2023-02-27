@@ -16,7 +16,7 @@ router.get("/list/:id", function (req, res, next) {
   let personId = req.params.id;
   db.Like.findAll({
     where: {
-      userId: personId,
+      costumerId: personId,
     },
   }).then(
     (list) => {
@@ -43,7 +43,7 @@ router.post("/add/:id", function (req, res, next) {
   let body = req.body;
   db.User.findOne({
     where: {
-      id: personId,
+      costumerId: personId,
     },
   }).then((user) => {
     db.Like.create(body).then((like) => {
