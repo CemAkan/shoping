@@ -22,5 +22,13 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.INTEGER,
       allowNUll: false,
     },
+    categoryId: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      references: {
+        model: "categories",
+        key: "id",
+      },
+    },
   });
 };
