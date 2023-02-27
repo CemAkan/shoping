@@ -8,16 +8,6 @@ var _ = require("underscore");
 const crypto = require("crypto");
 var db = require("../connection");
 
-//--> associations <--
-
-//cart
-db.User.hasMany(db.Cart, { foreignKey: "customerId" });
-db.Cart.belongsTo(db.User, { foreignKey: "customerId" });
-
-//like
-db.User.hasMany(db.Like, { foreignKey: "customerId" });
-db.Like.belongsTo(db.User, { foreignKey: "customerId" });
-
 // --> cyrpto <--
 const hashAlgo = "sha256";
 
