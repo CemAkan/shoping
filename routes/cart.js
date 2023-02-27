@@ -72,12 +72,19 @@ router.post("/add/:id", function (req, res, next) {
     where: {
       customerId: personId,
     },
-  }).then((user) => {
-    db.Cart.create(body).then((cart) => {
-      user.addCarts(cart);
-      res.send("Succesfully added.");
-    });
-  });
+  }).then(
+    (user) => {
+      db.Cart.create(body).then((cart) => {
+        user.addCarts(cart);
+        res.send("Succesfully added.");
+      });
+    },
+    (err) => {
+      res.status(400).send({
+        error: "Please use correct writing rules.",
+      });
+    }
+  );
 });
 
 //exporting

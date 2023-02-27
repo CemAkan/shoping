@@ -43,12 +43,19 @@ router.post("/add/:id", function (req, res, next) {
     where: {
       customerId: personId,
     },
-  }).then((user) => {
-    db.Like.create(body).then((like) => {
-      user.addLikes(like);
-      res.send("Succesfully added.");
-    });
-  });
+  }).then(
+    (user) => {
+      db.Like.create(body).then((like) => {
+        user.addLikes(like);
+        res.send("Succesfully added.");
+      });
+    },
+    (err) => {
+      res.status(400).send({
+        error: "Please use correct writing rules.",
+      });
+    }
+  );
 });
 
 //exporting
