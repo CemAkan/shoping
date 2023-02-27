@@ -1,11 +1,11 @@
 //--> Module dependencies.<--
 var express = require("express");
 var router = express.Router();
-var db = require("../connection");
+var db = require("../database/database");
 
 //--> List all categories <--
 router.get("/list", function (req, res, next) {
-  db.Category.findAll().then((categories) => {
+  db.categoryModel.findAll().then((categories) => {
     res.json(categories);
   });
 });
@@ -14,7 +14,7 @@ router.get("/list", function (req, res, next) {
 router.post("/add", function (req, res, next) {
   let body = req.body;
 
-  db.Category.create(body).then(
+  db.categoryModel.create(body).then(
     (category) => {
       res.json(category);
     },
@@ -36,54 +36,58 @@ router.put("/update/:id", function (req, res, next) {
     attributes.name = body.name;
   }
 
-  db.Category.findOne({
-    where: {
-      categoryId: category_Id,
-    },
-  }).then(
-    (category) => {
-      if (category) {
-        category.update(attributes).then(
-          (category) => {
-            res.json(category);
-          },
-          () => {
-            res.status(400).send();
-          }
-        );
-      } else {
-        res.status(404).send({
-          error: "Category can not found.",
-        });
+  db.categoryModel
+    .findOne({
+      where: {
+        categoryId: category_Id,
+      },
+    })
+    .then(
+      (category) => {
+        if (category) {
+          category.update(attributes).then(
+            (category) => {
+              res.json(category);
+            },
+            () => {
+              res.status(400).send();
+            }
+          );
+        } else {
+          res.status(404).send({
+            error: "Category can not found.",
+          });
+        }
+      },
+      () => {
+        res.status(500).send();
       }
-    },
-    () => {
-      res.status(500).send();
-    }
-  );
+    );
 });
 
 //--> Delete a category <--
 router.delete("/delete/:id", function (req, res, next) {
   let category_Id = req.params.id;
-  db.Category.destroy({
-    where: {
-      categoryId: category_Id,
-    },
-  }).then(
-    (rowdeleted) => {
-      if (rowdeleted === 0) {
-        res.status(404).send({
-          error: "Item can not found.",
-        });
-      } else {
-        res.status(204).send();
+  db.categoryModel
+    .destroy({
+      where: {
+        categoryId: category_Id,
+      },
+    })
+    .then(
+      (rowdeleted) => {
+        if (rowdeleted === 0) {
+          res.status(404).send({
+            error: "Item can not found.",
+          });
+        } else {
+          res.status(204).send();
+        }
+      },
+      () => {
+        res.status(500).send();
       }
-    },
-    () => {
-      res.status(500).send();
-    }
-  );
+    );
 });
 
 module.exports = router;

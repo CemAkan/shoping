@@ -6,7 +6,7 @@ var bodyParser = require("body-parser");
 app.use(bodyParser.json());
 var _ = require("underscore");
 const crypto = require("crypto");
-var db = require("../connection");
+var db = require("../database/database");
 
 // --> cyrpto <--
 const hashAlgo = "sha256";
@@ -15,7 +15,7 @@ const hashAlgo = "sha256";
 
 //--> list all user <--
 router.get("/list", function (req, res, next) {
-  db.User.findAll().then((resign) => {
+  db.userModel.findAll().then((resign) => {
     res.json(resign);
   });
 });
@@ -28,19 +28,21 @@ router.post("/sign-in", function (req, res, next) {
 
   const text = body.password;
   const hash = crypto.createHash(hashAlgo).update(text).digest("hex");
-  db.User.findOne({
-    where: {
-      username: body.username,
-      password: hash,
-    },
-    //--> login chech <--
-  }).then((todos) => {
-    if (todos != null) {
-      res.send("You succesfully logined.");
-    } else {
-      res.send("You can not login, please try again.");
-    }
-  }),
+  db.userModel
+    .findOne({
+      where: {
+        username: body.username,
+        password: hash,
+      },
+      //--> login chech <--
+    })
+    .then((todos) => {
+      if (todos != null) {
+        res.send("You succesfully logined.");
+      } else {
+        res.send("You can not login, please try again.");
+      }
+    }),
     () => {
       res.status(404).send({
         error: "You can not login, please try again.",
@@ -64,7 +66,7 @@ router.post("/sign-up", function (req, res, next) {
   if (text.length < 8) {
     res.send("Please use a long password.");
   } else {
-    db.User.create(body).then(
+    db.userModel.create(body).then(
       (resign) => {
         res.json(resign);
       },
@@ -95,54 +97,58 @@ router.put("/update/:id", function (req, res, next) {
     attributes.password = body.password;
   }
 
-  db.User.findOne({
-    where: {
-      id: personId,
-    },
-  }).then(
-    (resign) => {
-      if (resign) {
-        resign.update(attributes).then(
-          (resign) => {
-            res.json(resign);
-          },
-          () => {
-            res.status(400).send();
-          }
-        );
-      } else {
-        res.status(404).send({
-          error: "Person can not found.",
-        });
+  db.userModel
+    .findOne({
+      where: {
+        id: personId,
+      },
+    })
+    .then(
+      (resign) => {
+        if (resign) {
+          resign.update(attributes).then(
+            (resign) => {
+              res.json(resign);
+            },
+            () => {
+              res.status(400).send();
+            }
+          );
+        } else {
+          res.status(404).send({
+            error: "Person can not found.",
+          });
+        }
+      },
+      () => {
+        res.status(500).send();
       }
-    },
-    () => {
-      res.status(500).send();
-    }
-  );
+    );
 });
 
 //--> delete a user <--
 router.delete("/delete/:id", function (req, res, next) {
   let personId = req.params.id;
-  db.User.destroy({
-    where: {
-      id: personId,
-    },
-  }).then(
-    (rowdeleted) => {
-      if (rowdeleted === 0) {
-        res.status(404).send({
-          error: "Person can not found.",
-        });
-      } else {
-        res.status(204).send();
+  db.userModel
+    .destroy({
+      where: {
+        id: personId,
+      },
+    })
+    .then(
+      (rowdeleted) => {
+        if (rowdeleted === 0) {
+          res.status(404).send({
+            error: "Person can not found.",
+          });
+        } else {
+          res.status(204).send();
+        }
+      },
+      () => {
+        res.status(500).send();
       }
-    },
-    () => {
-      res.status(500).send();
-    }
-  );
+    );
 });
 
 //exporting
