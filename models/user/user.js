@@ -26,10 +26,9 @@ module.exports = (sequelize, Sequelize) => {
       },
     },
     password: {
-      type: Sequelize.STRING,
-      allowNUll: false,
+      type: DataTypes.STRING(64),
       validate: {
-        len: [8, 100],
+        is: /^[0-9a-f]{64}$/i,
       },
     },
     role: {
