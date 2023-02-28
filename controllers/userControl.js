@@ -63,50 +63,22 @@ users.signUp = (req, res) => {
 };
 
 //--> update a user <--
-users.update = (req, res) => {
+users.update = async (req, res) => {
   let personId = req.params.id;
-  let body = _.pick(req.body, "username", "email", "password");
-  let attributes = {};
+  let body = req.body;
+  let condition = {
+    where: {
+      customerId: personId,
+    },
+  };
 
-  if (body.hasOwnProperty("username")) {
-    attributes.username = body.username;
-  }
+  const foundUser = await model.findOne(userModel, condition);
 
-  if (body.hasOwnProperty("email")) {
-    attributes.email = body.email;
-  }
+  var hash = crypter(body.password);
+  body.password = hash;
 
-  if (body.hasOwnProperty("password")) {
-    attributes.password = body.password;
-  }
-
-  model
-    .findOne(userModel, {
-      where: {
-        id: personId,
-      },
-    })
-    .then(
-      (resign) => {
-        if (resign) {
-          resign.update(attributes).then(
-            (resign) => {
-              res.json(resign);
-            },
-            () => {
-              res.status(400).send();
-            }
-          );
-        } else {
-          res.status(404).send({
-            error: "Person can not found.",
-          });
-        }
-      },
-      () => {
-        res.status(500).send();
-      }
-    );
+  var updatedProfile = await model.update(foundUser, body);
+  res.status(400).send(updatedProfile);
 };
 
 //--> delete a user <--
@@ -115,7 +87,7 @@ users.delete = (req, res, next) => {
   model
     .delete(userModel, {
       where: {
-        id: personId,
+        customerId: personId,
       },
     })
     .then(
