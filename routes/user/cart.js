@@ -68,9 +68,6 @@ router.get("/price/:id", (req, res, next) => {
     });
 });
 
-// set to variables
-var Cart = db.cartModel;
-
 //--> add items to cart list <--
 router.post("/add/:id", (req, res, next) => {
   let personId = req.params.id;
@@ -84,7 +81,7 @@ router.post("/add/:id", (req, res, next) => {
     .then(
       (user) => {
         model.create(cartModel, body).then((cart) => {
-          user.addCarts(cart);
+          user.addcartModels(cart);
           res.send("Succesfully added.");
         });
       },

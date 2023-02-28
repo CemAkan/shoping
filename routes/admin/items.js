@@ -12,9 +12,6 @@ router.get("/list", async (req, res, next) => {
   });
 });
 
-// set to variable
-var Item = db.itemModel;
-
 //--> Add a item <--
 router.post("/add/:id", (req, res, next) => {
   let category_Id = req.params.id;
@@ -34,7 +31,7 @@ router.post("/add/:id", (req, res, next) => {
             categoryId: category_Id,
           })
           .then((item) => {
-            category.addItems(item);
+            category.additemModels(item);
             res.send(body.name + " succesfully added.");
           });
       },

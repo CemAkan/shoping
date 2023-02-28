@@ -32,9 +32,6 @@ router.get("/list/:id", (req, res, next) => {
     );
 });
 
-// set to variables
-var Like = db.Like;
-
 //--> add items to like list<--
 router.post("/add/:id", (req, res, next) => {
   let personId = req.params.id;
@@ -48,7 +45,7 @@ router.post("/add/:id", (req, res, next) => {
     .then(
       (user) => {
         model.create(likeModel, body).then((like) => {
-          user.addLikes(like);
+          user.addlikeModels(like);
           res.send("Succesfully added.");
         });
       },
