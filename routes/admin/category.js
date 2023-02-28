@@ -1,21 +1,22 @@
 //--> Module dependencies.<--
 var express = require("express");
 var router = express.Router();
-var db = require("../../database/database");
+var { categoryModel } = require("../../database/database");
 const checkAuth = require("../../middleware/middleware");
+const model = require("../../services/modelService");
 
 //--> List all categories <--
-router.get("/list", function (req, res, next) {
-  db.categoryModel.findAll().then((categories) => {
+router.get("/list", async (req, res, next) => {
+  await model.findAll(categoryModel).then((categories) => {
     res.json(categories);
   });
 });
 
 //--> Add a category <--
-router.post("/add", function (req, res, next) {
+router.post("/add", (req, res, next) => {
   let body = req.body;
 
-  db.categoryModel.create(body).then(
+  model.create(categoryModel, body).then(
     (category) => {
       res.json(category);
     },
@@ -28,7 +29,7 @@ router.post("/add", function (req, res, next) {
 });
 
 //--> Update a category <--
-router.put("/update/:id", function (req, res, next) {
+router.put("/update/:id", (req, res, next) => {
   let category_Id = req.params.id;
   let body = req.body;
   let attributes = {};
@@ -37,8 +38,8 @@ router.put("/update/:id", function (req, res, next) {
     attributes.name = body.name;
   }
 
-  db.categoryModel
-    .findOne({
+  model
+    .findOne(categoryModel, {
       where: {
         categoryId: category_Id,
       },
@@ -69,8 +70,8 @@ router.put("/update/:id", function (req, res, next) {
 //--> Delete a category <--
 router.delete("/delete/:id", function (req, res, next) {
   let category_Id = req.params.id;
-  db.categoryModel
-    .destroy({
+  model
+    .delete(categoryModel, {
       where: {
         categoryId: category_Id,
       },

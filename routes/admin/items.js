@@ -1,12 +1,13 @@
 //--> Module dependencies.<--
 var express = require("express");
 var router = express.Router();
-var db = require("../../database/database");
+var { itemModel, categoryModel } = require("../../database/database");
 const checkAuth = require("../../middleware/middleware");
+const model = require("../../services/modelService");
 
 //--> List all items <--
-router.get("/list", function (req, res, next) {
-  db.itemModel.findAll().then((items) => {
+router.get("/list", async (req, res, next) => {
+  await model.findAll(itemModel).then((items) => {
     res.json(items);
   });
 });
@@ -15,19 +16,19 @@ router.get("/list", function (req, res, next) {
 var Item = db.itemModel;
 
 //--> Add a item <--
-router.post("/add/:id", function (req, res, next) {
+router.post("/add/:id", (req, res, next) => {
   let category_Id = req.params.id;
   let body = req.body;
-  db.categoryModel
-    .findOne({
+  model
+    .findOne(categoryModel, {
       where: {
         categoryId: category_Id,
       },
     })
     .then(
       (category) => {
-        db.itemModel
-          .create({
+        model
+          .create(itemModel, {
             name: body.name,
             price: body.price,
             categoryId: category_Id,
@@ -46,7 +47,7 @@ router.post("/add/:id", function (req, res, next) {
 });
 
 //--> Update a item <--
-router.put("/update/:id", function (req, res, next) {
+router.put("/update/:id", (req, res, next) => {
   let itemId = req.params.id;
   let body = _.pick(req.body, "name", "price");
   let attributes = {};
@@ -59,8 +60,8 @@ router.put("/update/:id", function (req, res, next) {
     attributes.price = body.price;
   }
 
-  db.itemModel
-    .findOne({
+  model
+    .findOne(itemModel, {
       where: {
         id: itemId,
       },
@@ -89,10 +90,10 @@ router.put("/update/:id", function (req, res, next) {
 });
 
 //--> Delete a item <--
-router.delete("/delete/:id", function (req, res, next) {
+router.delete("/delete/:id", (req, res, next) => {
   let itemId = req.params.id;
-  db.itemModel
-    .destroy({
+  model
+    .delete(itemModel, {
       where: {
         id: itemId,
       },

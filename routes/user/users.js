@@ -5,31 +5,28 @@ var router = express.Router();
 var bodyParser = require("body-parser");
 app.use(bodyParser.json());
 var _ = require("underscore");
-var db = require("../../database/database");
+var { userModel } = require("../../database/database");
 const checkAuth = require("../../middleware/middleware");
-const crypter = require("../../services/passwordCrypt/passwordCrypt");
+const crypter = require("../../services/passwordCrypt");
+const model = require("../../services/modelService");
 
 //--> METHODS FOR /user <--
 
 //--> list all user <--
-router.get("/list", checkAuth, function (req, res, next) {
-  db.userModel.findAll().then((resign) => {
-    res.json(resign);
-  });
+router.get("/list", checkAuth, async (req, res, next) => {
+  res.json(await model.findAll(userModel));
 });
 
 //--> login <--
-router.post("/sign-in", function (req, res, next) {
+router.post("/sign-in", async (req, res, next) => {
   let body = _.pick(req.body, "username", "password");
-
   var hash = crypter(body.password);
-  db.userModel
-    .findOne({
+  await model
+    .findOne(userModel, {
       where: {
         username: body.username,
         password: hash,
       },
-      //--> login chech <--
     })
     .then((todos) => {
       if (todos != null) {
@@ -45,12 +42,8 @@ router.post("/sign-in", function (req, res, next) {
     };
 });
 
-// set to variables
-var Like = db.Like;
-var Cart = db.Cart;
-
 //--> add a new user <--
-router.post("/sign-up", function (req, res, next) {
+router.post("/sign-up", (req, res, next) => {
   let body = req.body;
   var hash = crypter(body.password);
   body.password = hash;
@@ -58,7 +51,7 @@ router.post("/sign-up", function (req, res, next) {
   if (body.password.length < 8) {
     res.send("Please use a long password.");
   } else {
-    db.userModel.create(body).then(
+    model.create(userModel, body).then(
       (resign) => {
         res.json(resign);
       },
@@ -72,7 +65,7 @@ router.post("/sign-up", function (req, res, next) {
 });
 
 //--> update a user <--
-router.put("/update/:id", function (req, res, next) {
+router.put("/update/:id", (req, res, next) => {
   let personId = req.params.id;
   let body = _.pick(req.body, "username", "email", "password");
   let attributes = {};
@@ -89,8 +82,8 @@ router.put("/update/:id", function (req, res, next) {
     attributes.password = body.password;
   }
 
-  db.userModel
-    .findOne({
+  model
+    .findOne(userModel, {
       where: {
         id: personId,
       },
@@ -119,10 +112,10 @@ router.put("/update/:id", function (req, res, next) {
 });
 
 //--> delete a user <--
-router.delete("/delete/:id", function (req, res, next) {
+router.delete("/delete/:id", (req, res, next) => {
   let personId = req.params.id;
-  db.userModel
-    .destroy({
+  model
+    .delete(userModel, {
       where: {
         id: personId,
       },

@@ -1,16 +1,17 @@
 //--> Module dependencies.<--
 var express = require("express");
 var router = express.Router();
-var db = require("../../database/database");
+var { likeModel, userModel } = require("../../database/database");
 const checkAuth = require("../../middleware/middleware");
+const model = require("../../services/modelService");
 
 //--> routes for like <--
 
 //--> list all items that were added to like list <--
-router.get("/list/:id", function (req, res, next) {
+router.get("/list/:id", (req, res, next) => {
   let personId = req.params.id;
-  db.likeModel
-    .findAll({
+  model
+    .findAll(likeModel, {
       where: {
         customerId: personId,
       },
@@ -35,18 +36,18 @@ router.get("/list/:id", function (req, res, next) {
 var Like = db.Like;
 
 //--> add items to like list<--
-router.post("/add/:id", function (req, res, next) {
+router.post("/add/:id", (req, res, next) => {
   let personId = req.params.id;
   let body = req.body;
-  db.userModel
-    .findOne({
+  model
+    .findOne(userModel, {
       where: {
         customerId: personId,
       },
     })
     .then(
       (user) => {
-        db.likeModel.create(body).then((like) => {
+        model.create(likeModel, body).then((like) => {
           user.addLikes(like);
           res.send("Succesfully added.");
         });

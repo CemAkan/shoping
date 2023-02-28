@@ -1,16 +1,17 @@
 //--> Module dependencies <--
 var express = require("express");
 var router = express.Router();
-var db = require("../../database/database");
+var { cartModel, userModel, itemModel } = require("../../database/database");
 const checkAuth = require("../../middleware/middleware");
+const model = require("../../services/modelService");
 
 //--> routes for cart <--
 
 //--> list all items that were added to cart list<--
-router.get("/list/:id", function (req, res, next) {
+router.get("/list/:id", (req, res, next) => {
   let personId = req.params.id;
-  db.cartModel
-    .findAll({
+  model
+    .findAll(cartModel, {
       where: {
         customerId: personId,
       },
@@ -31,10 +32,10 @@ router.get("/list/:id", function (req, res, next) {
     );
 });
 //--> get total price of all items that were added to cart list<--
-router.get("/price/:id", function (req, res, next) {
+router.get("/price/:id", (req, res, next) => {
   let personId = req.params.id;
-  db.cartModel
-    .findAll({
+  model
+    .findAll(cartModel, {
       where: {
         customerId: personId,
       },
@@ -45,8 +46,8 @@ router.get("/price/:id", function (req, res, next) {
 
       cart.forEach((cartItem) => {
         let itemId = cartItem.itemIds;
-        let promise = db.itemModel
-          .findOne({
+        let promise = model
+          .findOne(itemModel, {
             where: {
               itemId: itemId,
             },
@@ -71,18 +72,18 @@ router.get("/price/:id", function (req, res, next) {
 var Cart = db.cartModel;
 
 //--> add items to cart list <--
-router.post("/add/:id", function (req, res, next) {
+router.post("/add/:id", (req, res, next) => {
   let personId = req.params.id;
   let body = req.body;
-  db.userModel
-    .findOne({
+  model
+    .findOne(userModel, {
       where: {
         customerId: personId,
       },
     })
     .then(
       (user) => {
-        db.cartModel.create(body).then((cart) => {
+        model.create(cartModel, body).then((cart) => {
           user.addCarts(cart);
           res.send("Succesfully added.");
         });
