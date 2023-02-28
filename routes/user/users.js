@@ -9,6 +9,7 @@ var { userModel } = require("../../database/database");
 const checkAuth = require("../../middleware/middleware");
 const crypter = require("../../services/passwordCrypt");
 const model = require("../../services/modelService");
+const userValidator = require("../../validators/authValidator");
 
 //--> METHODS FOR /user <--
 
@@ -43,7 +44,7 @@ router.post("/sign-in", async (req, res, next) => {
 });
 
 //--> add a new user <--
-router.post("/sign-up", (req, res, next) => {
+router.post("/sign-up", userValidator.signUp, (req, res, next) => {
   let body = req.body;
   var hash = crypter(body.password);
   body.password = hash;
@@ -65,7 +66,7 @@ router.post("/sign-up", (req, res, next) => {
 });
 
 //--> update a user <--
-router.put("/update/:id", (req, res, next) => {
+router.put("/update/:id", userValidator.updateUser, (req, res, next) => {
   let personId = req.params.id;
   let body = _.pick(req.body, "username", "email", "password");
   let attributes = {};
