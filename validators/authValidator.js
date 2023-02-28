@@ -15,13 +15,14 @@ module.exports = {
       password: "required|string|min:8",
     };
 
-    //--> email check and return info to user about it <--i
+    //--> body variable <--
     let body = req.body;
 
     validator(req.body, validationRule, {}, (error, status) => {
       if (!status) {
         res.status(422).send({ status: "error", data: error });
       } else {
+        //--> email check and return info to user about it <--i
         model
           .findOne(userModel, {
             where: {
@@ -31,6 +32,11 @@ module.exports = {
           .then((person) => {
             if (person != null) {
               res.send("Please use different email.");
+              //--> username length check and return info to user about it <--
+            } else if (body.username.length > 10) {
+              res.send("Please use a shorter username.");
+            } else if (body.username.length < 1) {
+              res.send("Please write a username.");
             } else {
               next();
             }
@@ -46,11 +52,21 @@ module.exports = {
       password: "string|min:8",
     };
 
+    //--> body variable <--
+    let body = req.body;
+
     validator(req.body, validationRule, {}, (error, status) => {
       if (!status) {
         res.status(422).send({ status: "error", data: error });
       } else {
-        next();
+        //--> username length check and return info to user about it <--
+        if (body.username.length > 10) {
+          res.send("Please use a shorter username.");
+        } else if (body.username.length < 1) {
+          res.send("Please write a username.");
+        } else {
+          next();
+        }
       }
     });
   },
