@@ -12,6 +12,8 @@ const model = require("../services/modelService");
 const userValidator = require("../validators/authValidator");
 
 //--> METHODS FOR /user <--
+
+// export variable
 var users = {};
 
 //--> list all user <--

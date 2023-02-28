@@ -1,95 +1,18 @@
 //--> Module dependencies.<--
 var express = require("express");
 var router = express.Router();
-var { categoryModel } = require("../../database/database");
-const checkAuth = require("../../middleware/middleware");
-const model = require("../../services/modelService");
+var Category = require("../../controllers/categoryControl");
 
 //--> List all categories <--
-router.get("/list", async (req, res, next) => {
-  await model.findAll(categoryModel).then((categories) => {
-    res.json(categories);
-  });
-});
+router.get("/list", Category.list);
 
 //--> Add a category <--
-router.post("/add", (req, res, next) => {
-  let body = req.body;
-
-  model.create(categoryModel, body).then(
-    (category) => {
-      res.json(category);
-    },
-    (err) => {
-      res.status(400).send({
-        error: "Please use correct writing rules.",
-      });
-    }
-  );
-});
+router.post("/add", Category.add);
 
 //--> Update a category <--
-router.put("/update/:id", (req, res, next) => {
-  let category_Id = req.params.id;
-  let body = req.body;
-  let attributes = {};
-
-  if (body.hasOwnProperty("name")) {
-    attributes.name = body.name;
-  }
-
-  model
-    .findOne(categoryModel, {
-      where: {
-        categoryId: category_Id,
-      },
-    })
-    .then(
-      (category) => {
-        if (category) {
-          category.update(attributes).then(
-            (category) => {
-              res.json(category);
-            },
-            () => {
-              res.status(400).send();
-            }
-          );
-        } else {
-          res.status(404).send({
-            error: "Category can not found.",
-          });
-        }
-      },
-      () => {
-        res.status(500).send();
-      }
-    );
-});
+router.put("/update/:id", Category.update);
 
 //--> Delete a category <--
-router.delete("/delete/:id", function (req, res, next) {
-  let category_Id = req.params.id;
-  model
-    .delete(categoryModel, {
-      where: {
-        categoryId: category_Id,
-      },
-    })
-    .then(
-      (rowdeleted) => {
-        if (rowdeleted === 0) {
-          res.status(404).send({
-            error: "Item can not found.",
-          });
-        } else {
-          res.status(204).send();
-        }
-      },
-      () => {
-        res.status(500).send();
-      }
-    );
-});
+router.delete("/delete/:id", Category.delete);
 
 module.exports = router;
