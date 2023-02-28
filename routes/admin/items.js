@@ -6,7 +6,7 @@ const checkAuth = require("../../middleware/middleware");
 
 //--> List all items <--
 router.get("/list", function (req, res, next) {
-  db.Item.findAll().then((items) => {
+  db.itemModel.findAll().then((items) => {
     res.json(items);
   });
 });
