@@ -5,13 +5,23 @@ var Carts = require("../../controllers/cartControl");
 
 //--> routes for cart <--
 
-//--> list all items that were added to cart list<--
-router.get("/list/:id", Carts.list);
-//--> get total price of all items that were added to cart list<--
-router.get("/price/:id", Carts.price);
+//--> list all items that were added to cart <--
+router.get("/list/:id", Carts.list); //id = customerId
 
-//--> add items to cart list <--
-router.post("/add/:id", Carts.add);
+//--> get total price of all items that were added to cart <--
+router.get("/price/:id", Carts.price); //id = customerId
+
+//--> add items to cart <--
+router.post("/add/:id", Carts.add); //id = customerId
+
+//--> update a item in cart <--
+router.put("/update/:id", Carts.update); //id = id
+
+//--> delete a item in cart <--
+router.delete("/delete-one/:id", Carts.deleteOne); //id = id
+
+//--> delete cart <--
+router.delete("/delete-all/:id", Carts.deleteAll); //id = customerId
 
 //exporting
 module.exports = router;
