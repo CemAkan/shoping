@@ -5,12 +5,9 @@ var router = express.Router();
 var bodyParser = require("body-parser");
 app.use(bodyParser.json());
 var _ = require("underscore");
-const crypto = require("crypto");
 var db = require("../../database/database");
 const checkAuth = require("../../middleware/middleware");
-
-// --> cyrpto <--
-const hashAlgo = "sha256";
+const crypter = require("../../services/passwordCrypt/passwordCrypt");
 
 //--> METHODS FOR /user <--
 
@@ -25,10 +22,7 @@ router.get("/list", checkAuth, function (req, res, next) {
 router.post("/sign-in", function (req, res, next) {
   let body = _.pick(req.body, "username", "password");
 
-  //--> part of encrypting the password <--
-
-  const text = body.password;
-  const hash = crypto.createHash(hashAlgo).update(text).digest("hex");
+  var hash = crypter(body.password);
   db.userModel
     .findOne({
       where: {
@@ -59,9 +53,7 @@ var Cart = db.Cart;
 router.post("/sign-up", function (req, res, next) {
   let body = req.body;
 
-  //--> part of encrypting the password <--
-  const text = body.password;
-  const hash = crypto.createHash(hashAlgo).update(text).digest("hex");
+  var hash = crypter(body.password);
   body.password = hash;
   //--> password length check <--
   if (text.length < 8) {
