@@ -32,42 +32,20 @@ Category.add = (req, res, next) => {
 };
 
 //--> Update a category <--
-Category.update = (req, res, next) => {
+Category.update = async (req, res, next) => {
   let category_Id = req.params.id;
   let body = req.body;
-  let attributes = {};
 
-  if (body.hasOwnProperty("name")) {
-    attributes.name = body.name;
-  }
+  let condition = {
+    where: {
+      categoryId: category_Id,
+    },
+  };
 
-  model
-    .findOne(categoryModel, {
-      where: {
-        categoryId: category_Id,
-      },
-    })
-    .then(
-      (category) => {
-        if (category) {
-          category.update(attributes).then(
-            (category) => {
-              res.json(category);
-            },
-            () => {
-              res.status(400).send();
-            }
-          );
-        } else {
-          res.status(404).send({
-            error: "Category can not found.",
-          });
-        }
-      },
-      () => {
-        res.status(500).send();
-      }
-    );
+  const foundCategory = await model.findOne(categoryModel, condition);
+
+  var updatedCategory = await model.update(foundCategory, body);
+  res.status(400).send(updatedCategory);
 };
 
 //--> Delete a category <--

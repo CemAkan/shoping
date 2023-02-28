@@ -47,46 +47,19 @@ Item.add = (req, res, next) => {
 };
 
 //--> Update a item <--
-Item.update = (req, res, next) => {
+Item.update = async (req, res, next) => {
   let itemId = req.params.id;
-  let body = _.pick(req.body, "name", "price");
-  let attributes = {};
+  let body = req.body;
+  let condition = {
+    where: {
+      itemId: itemId,
+    },
+  };
 
-  if (body.hasOwnProperty("name")) {
-    attributes.name = body.name;
-  }
+  const foundItem = await model.findOne(itemModel, condition);
 
-  if (body.hasOwnProperty("price")) {
-    attributes.price = body.price;
-  }
-
-  model
-    .findOne(itemModel, {
-      where: {
-        id: itemId,
-      },
-    })
-    .then(
-      (item) => {
-        if (item) {
-          item.update(attributes).then(
-            (finalItem) => {
-              res.json(finalItem);
-            },
-            () => {
-              res.status(400).send();
-            }
-          );
-        } else {
-          res.status(404).send({
-            error: "Item can not found.",
-          });
-        }
-      },
-      () => {
-        res.status(500).send();
-      }
-    );
+  var updatedItem = await model.update(foundItem, body);
+  res.status(400).send(updatedItem);
 };
 
 //--> Delete a item <--
@@ -95,7 +68,7 @@ Item.delete = (req, res, next) => {
   model
     .delete(itemModel, {
       where: {
-        id: itemId,
+        itemId: itemId,
       },
     })
     .then(
