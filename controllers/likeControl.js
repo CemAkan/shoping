@@ -1,9 +1,9 @@
 //--> Module dependencies.<--
 var express = require("express");
 var router = express.Router();
-var { likeModel, userModel } = require("../../database/database");
-const checkAuth = require("../../middleware/middleware");
-const model = require("../../services/modelService");
+var { likeModel, userModel } = require("../database/database");
+const checkAuth = require("../middleware/middleware");
+const model = require("../services/modelService");
 
 //--> routes for like <--
 

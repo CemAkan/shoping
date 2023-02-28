@@ -1,9 +1,9 @@
 //--> Module dependencies.<--
 var express = require("express");
 var router = express.Router();
-var { itemModel, categoryModel } = require("../../database/database");
-const checkAuth = require("../../middleware/middleware");
-const model = require("../../services/modelService");
+var { itemModel, categoryModel } = require("../database/database");
+const checkAuth = require("../middleware/middleware");
+const model = require("../services/modelService");
 
 // export variable
 var Item = {};
