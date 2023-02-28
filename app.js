@@ -3,6 +3,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+const checkAuth = require("./middleware/middleware");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/user/users");
@@ -32,8 +33,8 @@ app.use("/like", likeRouter);
 app.use("/cart", cartRouter);
 
 //admin routes
-app.use("/category", categoryRouter);
-app.use("/items", itemRouter);
+app.use("/category", checkAuth, categoryRouter);
+app.use("/items", checkAuth, itemRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
