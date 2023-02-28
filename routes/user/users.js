@@ -48,13 +48,29 @@ router.post("/sign-up", userValidator.signUp, (req, res, next) => {
   let body = req.body;
   var hash = crypter(body.password);
   body.password = hash;
-  //--> password length check <--
-  if (body.password.length < 8) {
-    res.send("Please use a long password.");
-  } else {
-    model.create(userModel, body).then(
-      (resign) => {
-        res.json(resign);
+  //--> email check and return info to user about it <--
+  model
+    .findOne(userModel, {
+      where: {
+        email: body.email,
+      },
+    })
+    .then(
+      (person) => {
+        if (person != null) {
+          res.send("Please use different email.");
+        } else {
+          model.create(userModel, body).then(
+            (resign) => {
+              res.json(resign);
+            },
+            (err) => {
+              res.status(400).send({
+                error: "Please use correct writing rules.",
+              });
+            }
+          );
+        }
       },
       (err) => {
         res.status(400).send({
@@ -62,7 +78,6 @@ router.post("/sign-up", userValidator.signUp, (req, res, next) => {
         });
       }
     );
-  }
 });
 
 //--> update a user <--
