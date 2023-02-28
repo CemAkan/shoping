@@ -4,7 +4,6 @@ module.exports = (req, res, next) => {
   const token = req.headers.authorization
     ? req.headers.authorization.split(" ")[1]
     : null;
-  console.log("*/**/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/   " + token);
   if (token != null) {
     database.userModel
       .findOne({
