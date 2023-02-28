@@ -52,11 +52,10 @@ var Cart = db.Cart;
 //--> add a new user <--
 router.post("/sign-up", function (req, res, next) {
   let body = req.body;
-
   var hash = crypter(body.password);
   body.password = hash;
   //--> password length check <--
-  if (text.length < 8) {
+  if (body.password.length < 8) {
     res.send("Please use a long password.");
   } else {
     db.userModel.create(body).then(
