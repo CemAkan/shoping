@@ -25,7 +25,10 @@ module.exports = {
     try {
       let body = req.body;
       var createdItem = await model.create(itemModel, body);
-      res.json({ status: "success", data: createdItem });
+      res.json({
+        status: "success",
+        data: createdItem,
+      });
     } catch (error) {
       res.status(400).send({
         error: "Category can not found",
@@ -47,7 +50,10 @@ module.exports = {
       const foundItem = await model.findOne(itemModel, condition);
 
       var updatedItem = await model.update(foundItem, body);
-      res.json({ status: "success", data: create });
+      res.json({
+        status: "success",
+        data: create,
+      });
     } catch (error) {
       res.status(500).send({
         error: error,
@@ -70,7 +76,10 @@ module.exports = {
           error: "Item can not found.",
         });
       } else {
-        res.json({ status: "success", data: rowdeleted });
+        res.json({
+          status: "success",
+          data: rowdeleted,
+        });
       }
     } catch (error) {
       res.status(500).send({
