@@ -12,99 +12,96 @@ const model = require("../services/modelService");
 //--> METHODS FOR /user <--
 
 // export variable
-var users = {};
+module.exports = {
+  //--> list all user <--
+  list: async (req, res, next) => {
+    res.json(await model.findAll(userModel));
+  },
 
-//--> list all user <--
-users.list = async (req, res, next) => {
-  res.json(await model.findAll(userModel));
-};
+  //--> login <--
+  signIn: async (req, res, next) => {
+    let body = _.pick(req.body, "username", "password");
+    var hash = crypter(body.password);
+    await model
+      .findOne(userModel, {
+        where: {
+          username: body.username,
+          password: hash,
+        },
+      })
+      .then((todos) => {
+        if (todos != null) {
+          res.send(true);
+        } else {
+          res.send(false);
+        }
+      }),
+      () => {
+        res.status(404).send({
+          error: "You can not login, please try again.",
+        });
+      };
+  },
 
-//--> login <--
-users.signIn = async (req, res, next) => {
-  let body = _.pick(req.body, "username", "password");
-  var hash = crypter(body.password);
-  await model
-    .findOne(userModel, {
-      where: {
-        username: body.username,
-        password: hash,
+  //--> add a new user <--
+  signUp: (req, res) => {
+    let body = req.body;
+    var hash = crypter(body.password);
+    body.password = hash;
+
+    model.create(userModel, body).then(
+      (resign) => {
+        res.json(resign);
       },
-    })
-    .then((todos) => {
-      if (todos != null) {
-        res.send(true);
-      } else {
-        res.send(false);
+      (err) => {
+        res.status(400).send({
+          error: "Please use correct writing rules.",
+        });
       }
-    }),
-    () => {
-      res.status(404).send({
-        error: "You can not login, please try again.",
-      });
-    };
-};
+    );
+  },
 
-//--> add a new user <--
-users.signUp = (req, res) => {
-  let body = req.body;
-  var hash = crypter(body.password);
-  body.password = hash;
-
-  model.create(userModel, body).then(
-    (resign) => {
-      res.json(resign);
-    },
-    (err) => {
-      res.status(400).send({
-        error: "Please use correct writing rules.",
-      });
-    }
-  );
-};
-
-//--> update a user <--
-users.update = async (req, res) => {
-  let personId = req.params.id;
-  let body = req.body;
-  let condition = {
-    where: {
-      customerId: personId,
-    },
-  };
-
-  const foundUser = await model.findOne(userModel, condition);
-
-  var hash = crypter(body.password);
-  body.password = hash;
-
-  var updatedProfile = await model.update(foundUser, body);
-  res.status(400).send(updatedProfile);
-};
-
-//--> delete a user <--
-users.delete = (req, res, next) => {
-  let personId = req.params.id;
-  model
-    .delete(userModel, {
+  //--> update a user <--
+  update: async (req, res) => {
+    let personId = req.params.id;
+    let body = req.body;
+    let condition = {
       where: {
         customerId: personId,
       },
-    })
-    .then(
-      (rowdeleted) => {
-        if (rowdeleted === 0) {
-          res.status(404).send({
-            error: "Person can not found.",
-          });
-        } else {
-          res.status(204).send();
-        }
-      },
-      () => {
-        res.status(500).send();
-      }
-    );
-};
+    };
 
-//exporting
-module.exports = users;
+    const foundUser = await model.findOne(userModel, condition);
+
+    var hash = crypter(body.password);
+    body.password = hash;
+
+    var updatedProfile = await model.update(foundUser, body);
+    res.status(400).send(updatedProfile);
+  },
+
+  //--> delete a user <--
+  deleting: (req, res, next) => {
+    let personId = req.params.id;
+    model
+      .delete(userModel, {
+        where: {
+          customerId: personId,
+        },
+      })
+      .then(
+        (rowdeleted) => {
+          if (rowdeleted === 0) {
+            res.status(404).send({
+              error: "Person can not found.",
+            });
+          } else {
+            res.status(204).send();
+          }
+        },
+        () => {
+          res.status(500).send();
+        }
+      );
+  },
+};
