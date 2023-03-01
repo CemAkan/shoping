@@ -34,7 +34,6 @@ Item.add = (req, res, next) => {
             categoryId: category_Id,
           })
           .then((item) => {
-            category.additemModels(item);
             res.send(body.name + " succesfully added.");
           });
       },

@@ -76,6 +76,7 @@ Carts.price = (req, res, next) => {
 Carts.add = (req, res, next) => {
   let personId = req.params.id;
   let body = req.body;
+  body.customerId = personId;
   model
     .findOne(userModel, {
       where: {
@@ -85,7 +86,6 @@ Carts.add = (req, res, next) => {
     .then(
       (user) => {
         model.create(cartModel, body).then((cart) => {
-          user.addcartModels(cart);
           res.send("Succesfully added.");
         });
       },
@@ -140,20 +140,39 @@ Carts.deleteOne = (req, res, next) => {
 
 //delete cart
 Carts.deleteAll = (req, res, next) => {
-  let personID = req.params.id;
-  let condition = {
-    where: {
-      customerId: personID,
-    },
-  };
+  let personId = req.params.id;
+  model
+    .findAll(cartModel, {
+      where: {
+        customerId: personId,
+      },
+    })
+    .then((cart) => {
+      let total = 0;
+      let promises = [];
 
-  model.findAll(cartModel, condition).then((carts) => {
-    carts.forEach((cart) => {
-      model.delete(cartModel, cart).then((success) => {
-        res.send("Cart was successfully deleted.");
+      cart.forEach((cartItem) => {
+        let itemId = cartItem.id;
+        let promise = model
+          .delete(cartModel, {
+            where: {
+              id: itemId,
+            },
+          })
+          .then((item) => {
+            total = total + 1;
+          });
+        promises.push(promise);
       });
+
+      Promise.all(promises).then(() => {
+        res.send(total.toString());
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(400).send();
     });
-  });
 };
 
 //exporting
