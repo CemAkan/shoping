@@ -24,14 +24,5 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.FLOAT,
       allowNUll: false,
     },
-    //foreign key (category)
-    categoryId: {
-      type: Sequelize.INTEGER,
-      allowNull: true,
-      references: {
-        model: "categories",
-        key: "categoryId",
-      },
-    },
   });
 };
