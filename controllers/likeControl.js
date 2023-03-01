@@ -35,10 +35,13 @@ like.list = (req, res, next) => {
     );
 };
 
+var Like = likeModel;
+
 //--> add items to like list<--
 like.add = (req, res, next) => {
   let personId = req.params.id;
   let body = req.body;
+  body.customerId = personId;
   model
     .findOne(userModel, {
       where: {
@@ -48,7 +51,6 @@ like.add = (req, res, next) => {
     .then(
       (user) => {
         model.create(likeModel, body).then((like) => {
-          user.addlikeModels(like);
           res.send("Succesfully added.");
         });
       },
@@ -103,21 +105,39 @@ like.deleteOne = (req, res, next) => {
 
 //delete like list
 like.deleteAll = (req, res, next) => {
-  let personID = req.params.id;
-  let condition = {
-    where: {
-      customerId: personID,
-    },
-  };
+  let personId = req.params.id;
+  model
+    .findAll(likeModel, {
+      where: {
+        customerId: personId,
+      },
+    })
+    .then((like) => {
+      let total = 0;
+      let promises = [];
 
-  model.findAll(likeModel, condition).then((likes) => {
-    likes.forEach((like) => {
-      model.delete(likeModel, like).then((success) => {
-        res.send("Like list was successfully deleted.");
+      like.forEach((likeItem) => {
+        let itemId = likeItem.id;
+        let promise = model
+          .delete(likeModel, {
+            where: {
+              id: itemId,
+            },
+          })
+          .then((item) => {
+            total = total + 1;
+          });
+        promises.push(promise);
       });
-    });
-  });
-};
 
+      Promise.all(promises).then(() => {
+        res.send(total.toString());
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(400).send();
+    });
+};
 //exporting
 module.exports = like;
