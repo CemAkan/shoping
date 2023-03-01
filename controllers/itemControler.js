@@ -42,7 +42,7 @@ module.exports = {
       let body = req.body;
       let condition = {
         where: {
-          itemId: body.id,
+          itemId: body.itemId,
         },
       };
 
