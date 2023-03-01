@@ -10,7 +10,7 @@ var {
   update,
 } = require("../../controllers/userControler");
 const checkAuth = require("../../middleware/middleware");
-const userValidator = require("../../validators/authValidator");
+const { user_signUp, updateUser } = require("../../validators/authValidator");
 
 //--> METHODS FOR /user <--
 
@@ -21,10 +21,10 @@ router.get("/list", checkAuth, list);
 router.post("/sign-in", signIn);
 
 //--> add a new user <--
-router.post("/sign-up", userValidator.signUp, signUp);
+router.post("/sign-up", user_signUp, signUp);
 
 //--> update a user <--
-router.put("/update", userValidator.updateUser, update);
+router.put("/update", updateUser, update);
 
 //--> delete a user <--
 router.delete("/delete/:id", deleting);
