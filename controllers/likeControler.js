@@ -36,27 +36,18 @@ module.exports = {
 
   //--> add items to like list<--
   add: (req, res, next) => {
-    let personId = req.params.id;
     let body = req.body;
-    body.customerId = personId;
-    model
-      .findOne(userModel, {
-        where: {
-          customerId: personId,
-        },
-      })
-      .then(
-        (user) => {
-          model.create(likeModel, body).then((like) => {
-            res.send("Succesfully added.");
-          });
-        },
-        (err) => {
-          res.status(400).send({
-            error: "Please use correct writing rules.",
-          });
-        }
-      );
+
+    model.create(likeModel, body).then(
+      (create) => {
+        res.send(create);
+      },
+      (err) => {
+        res.status(400).send({
+          error: "User can not found",
+        });
+      }
+    );
   },
 
   //--> update a item in like list <--

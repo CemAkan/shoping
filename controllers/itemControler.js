@@ -16,32 +16,18 @@ module.exports = {
 
   //--> Add a item <--
   add: (req, res, next) => {
-    let category_Id = req.params.id;
     let body = req.body;
-    model
-      .findOne(categoryModel, {
-        where: {
-          categoryId: category_Id,
-        },
-      })
-      .then(
-        (category) => {
-          model
-            .create(itemModel, {
-              name: body.name,
-              price: body.price,
-              categoryId: category_Id,
-            })
-            .then((item) => {
-              res.send(body.name + " succesfully added.");
-            });
-        },
-        (err) => {
-          res.status(400).send({
-            error: "Please use correct writing rules.",
-          });
-        }
-      );
+
+    model.create(itemModel, body).then(
+      (create) => {
+        res.send(create);
+      },
+      (err) => {
+        res.status(400).send({
+          error: "Category can not found",
+        });
+      }
+    );
   },
 
   //--> Update a item <--
