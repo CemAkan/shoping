@@ -53,6 +53,8 @@ module.exports = {
   signUp: async (req, res) => {
     try {
       let body = req.body;
+      var hash = crypter(body.password);
+      body.password = hash;
       var createdUser = await model.create(userModel, body);
       res.json({
         status: "success",
@@ -60,7 +62,7 @@ module.exports = {
       });
     } catch (error) {
       res.status(500).send({
-        error: error,
+        error: error.errors[0].message,
       });
     }
   },
