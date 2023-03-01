@@ -1,18 +1,23 @@
 //--> Module dependencies.<--
 var express = require("express");
 var router = express.Router();
-var Item = require("../../controllers/itemControler");
+var {
+  add,
+  list,
+  update,
+  deleting,
+} = require("../../controllers/itemControler");
 
 //--> List all items <--
-router.get("/list", Item.list);
+router.get("/list", list);
 
 //--> Add a item <--
-router.post("/add/:id", Item.add);
+router.post("/add/:id", add);
 
 //--> Update a item <--
-router.put("/update/:id", Item.update);
+router.put("/update/:id", update);
 
 //--> Delete a item <--
-router.delete("/delete/:id", Item.delete);
+router.delete("/delete/:id", deleting);
 
 module.exports = router;

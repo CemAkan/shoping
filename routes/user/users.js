@@ -2,26 +2,32 @@
 var express = require("express");
 var app = express();
 var router = express.Router();
-var control = require("../../controllers/userControler");
+var {
+  deleting,
+  list,
+  signIn,
+  signUp,
+  update,
+} = require("../../controllers/userControler");
 const checkAuth = require("../../middleware/middleware");
 const userValidator = require("../../validators/authValidator");
 
 //--> METHODS FOR /user <--
 
 //--> list all user <--
-router.get("/list", checkAuth, control.list);
+router.get("/list", checkAuth, list);
 
 //--> login <--
-router.post("/sign-in", control.signIn);
+router.post("/sign-in", signIn);
 
 //--> add a new user <--
-router.post("/sign-up", userValidator.signUp, control.signUp);
+router.post("/sign-up", userValidator.signUp, signUp);
 
 //--> update a user <--
-router.put("/update/:id", userValidator.updateUser, control.update);
+router.put("/update/:id", userValidator.updateUser, update);
 
 //--> delete a user <--
-router.delete("/delete/:id", control.delete);
+router.delete("/delete/:id", deleting);
 
 //exporting
 module.exports = router;
