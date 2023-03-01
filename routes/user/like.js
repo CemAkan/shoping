@@ -1,7 +1,7 @@
 //--> Module dependencies.<--
 var express = require("express");
 var router = express.Router();
-var like = require("../../controllers/likeControl");
+var like = require("../../controllers/likeControler");
 //--> routes for like <--
 
 //--> list all items that were added to like list <--

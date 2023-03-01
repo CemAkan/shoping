@@ -2,7 +2,7 @@
 var express = require("express");
 var app = express();
 var router = express.Router();
-var control = require("../../controllers/userControl");
+var control = require("../../controllers/userControler");
 const checkAuth = require("../../middleware/middleware");
 const userValidator = require("../../validators/authValidator");
 

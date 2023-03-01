@@ -1,7 +1,7 @@
 //--> Module dependencies.<--
 var express = require("express");
 var router = express.Router();
-var Item = require("../../controllers/itemControl");
+var Item = require("../../controllers/itemControler");
 
 //--> List all items <--
 router.get("/list", Item.list);

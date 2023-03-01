@@ -1,7 +1,7 @@
 //--> Module dependencies <--
 var express = require("express");
 var router = express.Router();
-var Carts = require("../../controllers/cartControl");
+var Carts = require("../../controllers/cartControler");
 
 //--> routes for cart <--
 
