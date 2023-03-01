@@ -33,8 +33,8 @@ app.use("/like", likeRouter);
 app.use("/cart", cartRouter);
 
 //admin routes
-app.use("/category", checkAuth, categoryRouter);
-app.use("/items", checkAuth, itemRouter);
+app.use("/admin/category", checkAuth, categoryRouter);
+app.use("/admin/items", checkAuth, itemRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
