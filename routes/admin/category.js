@@ -1,18 +1,23 @@
 //--> Module dependencies.<--
 var express = require("express");
 var router = express.Router();
-var Category = require("../../controllers/categoryControler");
+var {
+  add,
+  list,
+  update,
+  deleting,
+} = require("../../controllers/categoryControler");
 
 //--> List all categories <--
-router.get("/list", Category.list);
+router.get("/list", list);
 
 //--> Add a category <--
-router.post("/add", Category.add);
+router.post("/add", add);
 
 //--> Update a category <--
-router.put("/update/:id", Category.update);
+router.put("/update/:id", update);
 
 //--> Delete a category <--
-router.delete("/delete/:id", Category.delete);
+router.delete("/delete/:id", deleting);
 
 module.exports = router;
