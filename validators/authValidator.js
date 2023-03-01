@@ -3,12 +3,11 @@ var app = express();
 const validator = require("./validate");
 var bodyParser = require("body-parser");
 app.use(bodyParser.json());
-var emailCheck = require("../services/emailUniqueCheck");
 var passwordCheck = require("../services/passwordCheck");
 
 module.exports = {
   // validation for creating a new user
-  signUp: (req, res, next) => {
+  user_signUp: (req, res, next) => {
     const validationRule = {
       username: "required|string|max:10",
       email: "required|email",
@@ -23,10 +22,6 @@ module.exports = {
         res.status(422).send({ status: "error", data: error });
       } else if (body.username < 1) {
         res.status(422).send("Please use a username.");
-      } else if (emailCheck(body.email)) {
-        res
-          .status(422)
-          .send("This email already use, please use different email");
       } else if (passwordCheck(body.password) == 1) {
         res.status(422).send("Please use lower case in your password.");
       } else if (passwordCheck(body.password) == 2) {
