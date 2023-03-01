@@ -19,7 +19,7 @@ router.get("/list/:id", list); //id = customerId
 router.get("/price/:id", price); //id = customerId
 
 //--> add items to cart <--
-router.post("/add/:id", add); //id = customerId
+router.post("/add", add); //id = customerId
 
 //--> update a item in cart <--
 router.put("/update/:id", update); //id = id

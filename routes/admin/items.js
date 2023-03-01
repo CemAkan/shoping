@@ -12,7 +12,7 @@ var {
 router.get("/list", list);
 
 //--> Add a item <--
-router.post("/add/:id", add);
+router.post("/add", add);
 
 //--> Update a item <--
 router.put("/update/:id", update);

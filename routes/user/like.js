@@ -14,7 +14,7 @@ var {
 router.get("/list/:id", list);
 
 //--> add items to like list<--
-router.post("/add/:id", add);
+router.post("/add", add);
 
 //--> update a item in like list <--
 router.put("/update/:id", update); //id = id
