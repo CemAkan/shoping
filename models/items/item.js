@@ -4,7 +4,6 @@ module.exports = (sequelize, Sequelize) => {
     itemId: {
       type: Sequelize.INTEGER,
       primaryKey: true,
-      readOnly: true,
       autoIncrement: true,
       allowNUll: false,
       unique: true,
@@ -28,7 +27,7 @@ module.exports = (sequelize, Sequelize) => {
     //foreign key (category)
     categoryId: {
       type: Sequelize.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: "categories",
         key: "categoryId",
