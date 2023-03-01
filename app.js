@@ -9,7 +9,7 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/user/users");
 var itemRouter = require("./routes/admin/items");
 var likeRouter = require("./routes/user/like");
-var cartRouter = require("./routes/user/users");
+var cartRouter = require("./routes/user/cart");
 var categoryRouter = require("./routes/admin/category");
 
 var app = express();
