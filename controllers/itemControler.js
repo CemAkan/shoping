@@ -51,7 +51,7 @@ module.exports = {
       var updatedItem = await model.update(foundItem, body);
       res.json({
         status: "success",
-        data: create,
+        data: updatedItem,
       });
     } catch (error) {
       res.status(500).send({
