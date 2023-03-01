@@ -9,65 +9,73 @@ const model = require("../services/modelService");
 module.exports = {
   //--> List all items <--
   list: async (req, res, next) => {
-    await model.findAll(itemModel).then((items) => {
-      res.json(items);
-    });
+    try {
+      await model.findAll(itemModel).then((items) => {
+        res.json({ status: "success", data: items });
+      });
+    } catch (error) {
+      res.status(500).send({
+        error: error,
+      });
+    }
   },
 
   //--> Add a item <--
-  add: (req, res, next) => {
-    let body = req.body;
-
-    model.create(itemModel, body).then(
-      (create) => {
-        res.send(create);
-      },
-      (err) => {
-        res.status(400).send({
-          error: "Category can not found",
-        });
-      }
-    );
+  add: async (req, res, next) => {
+    try {
+      let body = req.body;
+      var createdItem = await model.create(itemModel, body);
+      res.json({ status: "success", data: createdItem });
+    } catch (error) {
+      res.status(400).send({
+        error: "Category can not found",
+      });
+    }
   },
 
   //--> Update a item <--
   update: async (req, res, next) => {
-    let itemId = req.params.id;
-    let body = req.body;
-    let condition = {
-      where: {
-        itemId: itemId,
-      },
-    };
-
-    const foundItem = await model.findOne(itemModel, condition);
-
-    var updatedItem = await model.update(foundItem, body);
-    res.status(400).send(updatedItem);
-  },
-
-  //--> Delete a item <--
-  deleting: (req, res, next) => {
-    let itemId = req.params.id;
-    model
-      .delete(itemModel, {
+    try {
+      let itemId = req.params.id;
+      let body = req.body;
+      let condition = {
         where: {
           itemId: itemId,
         },
-      })
-      .then(
-        (rowdeleted) => {
-          if (rowdeleted === 0) {
-            res.status(404).send({
-              error: "Item can not found.",
-            });
-          } else {
-            res.status(204).send();
-          }
+      };
+
+      const foundItem = await model.findOne(itemModel, condition);
+
+      var updatedItem = await model.update(foundItem, body);
+      res.json({ status: "success", data: create });
+    } catch (error) {
+      res.status(500).send({
+        error: error,
+      });
+    }
+  },
+
+  //--> Delete a item <--
+  deleting: async (req, res, next) => {
+    try {
+      let itemId = req.params.id;
+      var rowdeleted = await model.delete(itemModel, {
+        where: {
+          itemId: itemId,
         },
-        () => {
-          res.status(500).send();
-        }
-      );
+      });
+
+      if (rowdeleted === 0) {
+        res.status(404).send({
+          error: "Item can not found.",
+        });
+      } else {
+        res.json({ status: "success", data: rowdeleted });
+      }
+    } catch (error) {
+      res.status(500).send({
+        error: error,
+      });
+    }
   },
 };
