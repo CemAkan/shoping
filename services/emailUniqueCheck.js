@@ -11,7 +11,6 @@ module.exports = (email) => {
     .then((person) => {
       if (person != null) {
         return true;
-        //--> username length check and return info to user about it <--
       } else {
         return false;
       }
