@@ -81,11 +81,10 @@ module.exports = {
   //--> update a item in cart <--
   update: async (req, res, next) => {
     try {
-      let cartId = req.params.id;
       let body = req.body;
       let condition = {
         where: {
-          id: cartId,
+          id: body.id,
         },
       };
 

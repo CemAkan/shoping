@@ -32,12 +32,11 @@ module.exports = {
 
   //--> Update a category <--
   update: async (req, res, next) => {
-    let category_Id = req.params.id;
     let body = req.body;
 
     let condition = {
       where: {
-        categoryId: category_Id,
+        categoryId: body.categoryId,
       },
     };
 

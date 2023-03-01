@@ -10,121 +10,120 @@ const model = require("../services/modelService");
 // export variable
 module.exports = {
   //--> list all items that were added to like list <--
-  list: (req, res, next) => {
-    let personId = req.params.id;
-    model
-      .findAll(likeModel, {
+  list: async (req, res, next) => {
+    try {
+      let personId = req.params.id;
+      var listModel = await model.findAll(likeModel, {
         where: {
           customerId: personId,
         },
-      })
-      .then(
-        (list) => {
-          let a = 0;
-          let listofLike = [];
-          for (i in list) {
-            listofLike.push(list[a].itemIds);
-            a = a + 1;
-          }
-          res.send(listofLike);
-        },
-        () => {
-          res.status(400).send();
-        }
-      );
+      });
+
+      res.json({
+        status: "success",
+        data: listModel,
+      });
+    } catch (error) {
+      res.status(500).send({
+        error: error,
+      });
+    }
   },
 
   //--> add items to like list<--
-  add: (req, res, next) => {
-    let body = req.body;
+  add: async (req, res, next) => {
+    try {
+      let body = req.body;
 
-    model.create(likeModel, body).then(
-      (create) => {
-        res.send(create);
-      },
-      (err) => {
-        res.status(400).send({
-          error: "User can not found",
-        });
-      }
-    );
+      var created = await model.create(likeModel, body);
+      res.json({
+        status: "success",
+        data: created,
+      });
+    } catch (error) {
+      res.status(400).send({
+        error: "User can not found",
+      });
+    }
   },
 
   //--> update a item in like list <--
   update: async (req, res, next) => {
-    let likeID = req.params.id;
-    let body = req.body;
-    let condition = {
-      where: {
-        id: likeID,
-      },
-    };
+    try {
+      let body = req.body;
+      let condition = {
+        where: {
+          id: body.id,
+        },
+      };
 
-    const foundLike = await model.findOne(likeModel, condition);
+      const foundLike = await model.findOne(likeModel, condition);
 
-    var updatedLike = await model.update(foundLike, body);
-    res.status(400).send(updatedLike);
+      var updatedLike = await model.update(foundLike, body);
+      res.json({
+        status: "success",
+        data: updatedLike,
+      });
+    } catch (error) {
+      res.status(500).send({
+        error: error,
+      });
+    }
   },
 
   //--> delete a item in like list <--
-  deleteOne: (req, res, next) => {
-    let likeID = req.params.id;
-    model
-      .delete(likeModel, {
+  deleteOne: async (req, res, next) => {
+    try {
+      let ID = req.params.id;
+      var rowdeleted = await model.delete(likeModel, {
         where: {
-          id: likeID,
+          id: ID,
         },
-      })
-      .then(
-        (rowdeleted) => {
-          if (rowdeleted === 0) {
-            res.status(404).send({
-              error: "Item in like list can not found.",
-            });
-          } else {
-            res.status(204).send();
-          }
-        },
-        () => {
-          res.status(500).send();
-        }
-      );
+      });
+
+      if (rowdeleted === 0) {
+        res.status(404).send({
+          error: "Item in cart can not found.",
+        });
+      } else {
+        res.json({
+          status: "success",
+          data: rowdeleted,
+        });
+      }
+    } catch (error) {
+      res.status(500).send({
+        error: error,
+      });
+    }
   },
 
   //delete like list
-  deleteAll: (req, res, next) => {
-    let personId = req.params.id;
-    model
-      .findAll(likeModel, {
+  deleteAll: async (req, res, next) => {
+    try {
+      let personId = req.params.id;
+      const like = await model.findAll(likeModel, {
         where: {
           customerId: personId,
         },
-      })
-      .then((like) => {
-        let total = 0;
-        let promises = [];
-
-        like.forEach((likeItem) => {
-          let itemId = likeItem.id;
-          let promise = model
-            .delete(likeModel, {
-              where: {
-                id: itemId,
-              },
-            })
-            .then((item) => {
-              total = total + 1;
-            });
-          promises.push(promise);
-        });
-
-        Promise.all(promises).then(() => {
-          res.send(total.toString());
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-        res.status(400).send();
       });
+
+      like.forEach((cartItem) => {
+        let itemId = cartItem.id;
+        model.delete(likeModel, {
+          where: {
+            id: itemId,
+          },
+        });
+      });
+
+      res.json({
+        status: "success",
+      });
+    } catch (error) {
+      res.status(500).send({
+        error: error,
+      });
+    }
   },
 };

@@ -39,11 +39,10 @@ module.exports = {
   //--> Update a item <--
   update: async (req, res, next) => {
     try {
-      let itemId = req.params.id;
       let body = req.body;
       let condition = {
         where: {
-          itemId: itemId,
+          itemId: body.id,
         },
       };
 

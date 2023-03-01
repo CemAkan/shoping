@@ -63,11 +63,10 @@ module.exports = {
 
   //--> update a user <--
   update: async (req, res) => {
-    let personId = req.params.id;
     let body = req.body;
     let condition = {
       where: {
-        customerId: personId,
+        customerId: body.customerId,
       },
     };
 

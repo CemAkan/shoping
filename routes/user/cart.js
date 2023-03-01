@@ -22,7 +22,7 @@ router.get("/price/:id", price); //id = customerId
 router.post("/add", add); //id = customerId
 
 //--> update a item in cart <--
-router.put("/update/:id", update); //id = id
+router.put("/update", update); //id = id
 
 //--> delete a item in cart <--
 router.delete("/delete-one/:id", deleteOne); //id = id
