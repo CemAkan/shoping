@@ -15,92 +15,104 @@ const model = require("../services/modelService");
 module.exports = {
   //--> list all user <--
   list: async (req, res, next) => {
-    res.json(await model.findAll(userModel));
+    try {
+      await model.findAll(userModel).then((users) => {
+        res.json({ status: "success", data: users });
+      });
+    } catch (error) {
+      res.status(500).send({
+        error: error,
+      });
+    }
   },
-
   //--> login <--
   signIn: async (req, res, next) => {
-    let body = _.pick(req.body, "username", "password");
-    var hash = crypter(body.password);
-    await model
-      .findOne(userModel, {
+    try {
+      let body = _.pick(req.body, "username", "password");
+      var hash = crypter(body.password);
+      var login = await model.findOne(userModel, {
         where: {
           username: body.username,
           password: hash,
         },
-      })
-      .then((todos) => {
-        if (todos != null) {
-          res.send(true);
-        } else {
-          res.send(false);
-        }
-      }),
-      () => {
-        res.status(404).send({
-          error: "You can not login, please try again.",
-        });
-      };
+      });
+
+      if (login != null) {
+        res.send(true);
+      } else {
+        res.send(false);
+      }
+    } catch (error) {
+      res.status(500).send({
+        error: error,
+      });
+    }
   },
 
   //--> add a new user <--
-  signUp: (req, res) => {
-    let body = req.body;
-    var hash = crypter(body.password);
-    body.password = hash;
-
-    model.create(userModel, body).then(
-      (resign) => {
-        res.json(resign);
-      },
-      (err) => {
-        res.status(400).send({
-          error: "Please use correct writing rules.",
-        });
-      }
-    );
+  signUp: async (req, res) => {
+    try {
+      let body = req.body;
+      var createdUser = await model.create(userModel, body);
+      res.json({
+        status: "success",
+        data: createdUser,
+      });
+    } catch (error) {
+      res.status(500).send({
+        error: error,
+      });
+    }
   },
 
   //--> update a user <--
-  update: async (req, res) => {
-    let body = req.body;
-    let condition = {
-      where: {
-        customerId: body.customerId,
-      },
-    };
+  update: async (req, res, next) => {
+    try {
+      let body = req.body;
+      let condition = {
+        where: {
+          customerId: body.customerId,
+        },
+      };
 
-    const foundUser = await model.findOne(userModel, condition);
+      const foundUser = await model.findOne(userModel, condition);
 
-    var hash = crypter(body.password);
-    body.password = hash;
-
-    var updatedProfile = await model.update(foundUser, body);
-    res.status(400).send(updatedProfile);
+      var updatedUser = await model.update(foundUser, body);
+      res.json({
+        status: "success",
+        data: updatedUser,
+      });
+    } catch (error) {
+      res.status(500).send({
+        error: error,
+      });
+    }
   },
 
   //--> delete a user <--
-  deleting: (req, res, next) => {
-    let personId = req.params.id;
-    model
-      .delete(userModel, {
+  deleting: async (req, res, next) => {
+    try {
+      let personId = req.params.id;
+      var rowdeleted = await model.delete(userModel, {
         where: {
           customerId: personId,
         },
-      })
-      .then(
-        (rowdeleted) => {
-          if (rowdeleted === 0) {
-            res.status(404).send({
-              error: "Person can not found.",
-            });
-          } else {
-            res.status(204).send();
-          }
-        },
-        () => {
-          res.status(500).send();
-        }
-      );
+      });
+
+      if (rowdeleted === 0) {
+        res.status(404).send({
+          error: "User can not found.",
+        });
+      } else {
+        res.json({
+          status: "success",
+          data: rowdeleted,
+        });
+      }
+    } catch (error) {
+      res.status(500).send({
+        error: error,
+      });
+    }
   },
 };
