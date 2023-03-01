@@ -14,7 +14,8 @@ module.exports = {
         res.json({ status: "success", data: categories });
       });
     } catch (error) {
-      res.status(500).send({
+      res.json({
+        status: "error",
         error: error,
       });
     }
@@ -30,8 +31,9 @@ module.exports = {
         data: createdCategory,
       });
     } catch (error) {
-      res.status(400).send({
-        error: "Category can not found",
+      res.json({
+        status: "error",
+        error: error,
       });
     }
   },
@@ -54,7 +56,8 @@ module.exports = {
         data: updatedCategory,
       });
     } catch (error) {
-      res.status(500).send({
+      res.json({
+        status: "error",
         error: error,
       });
     }
@@ -81,7 +84,8 @@ module.exports = {
         });
       }
     } catch (error) {
-      res.status(500).send({
+      res.json({
+        status: "error",
         error: error,
       });
     }

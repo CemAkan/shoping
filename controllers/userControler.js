@@ -20,7 +20,8 @@ module.exports = {
         res.json({ status: "success", data: users });
       });
     } catch (error) {
-      res.status(500).send({
+      res.json({
+        status: "error",
         error: error,
       });
     }
@@ -38,12 +39,17 @@ module.exports = {
       });
 
       if (login != null) {
-        res.send(true);
+        res.json({
+          status: "success",
+        });
       } else {
-        res.send(false);
+        res.json({
+          status: "error",
+        });
       }
     } catch (error) {
-      res.status(500).send({
+      res.json({
+        status: "error",
         error: error,
       });
     }
@@ -61,7 +67,8 @@ module.exports = {
         data: createdUser,
       });
     } catch (error) {
-      res.status(500).send({
+      res.json({
+        status: "error",
         error: error.errors[0].message,
       });
     }
@@ -85,7 +92,8 @@ module.exports = {
         data: updatedUser,
       });
     } catch (error) {
-      res.status(500).send({
+      res.json({
+        status: "error",
         error: error,
       });
     }
@@ -112,7 +120,8 @@ module.exports = {
         });
       }
     } catch (error) {
-      res.status(500).send({
+      res.json({
+        status: "error",
         error: error,
       });
     }

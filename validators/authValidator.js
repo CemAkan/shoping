@@ -21,15 +21,30 @@ module.exports = {
       if (!status) {
         res.status(422).send({ status: "error", data: error });
       } else if (body.username < 1) {
-        res.status(422).send("Please use a username.");
+        res.json({
+          status: "error",
+          error: "Please use a username.",
+        });
       } else if (passwordCheck(body.password) == 1) {
-        res.status(422).send("Please use lower case in your password.");
+        res.json({
+          status: "error",
+          error: "Please use lower case in your password.",
+        });
       } else if (passwordCheck(body.password) == 2) {
-        res.status(422).send("Please use capitals in your password.");
+        res.json({
+          status: "error",
+          error: "Please use capitals in your password.",
+        });
       } else if (passwordCheck(body.password) == 3) {
-        res.status(422).send("Please use number in your password.");
+        res.json({
+          status: "error",
+          error: "Please use number in your password.",
+        });
       } else if (passwordCheck(body.password) == 4) {
-        res.status(422).send("Please use symbols in your password.");
+        res.json({
+          status: "error",
+          error: "Please use symbols in your password.",
+        });
       } else {
         next();
       }
@@ -50,15 +65,30 @@ module.exports = {
       if (!status) {
         res.status(422).send({ status: "error", data: error });
       } else if (body.username < 1) {
-        res.status(422).send("Please use a username.");
+        res.json({
+          status: "error",
+          error: "Please use a username.",
+        });
       } else if (passwordCheck(body.password) == 1) {
-        res.status(422).send("Please use lower case in your password.");
+        res.json({
+          status: "error",
+          error: "Please use lower case in your password.",
+        });
       } else if (passwordCheck(body.password) == 2) {
-        res.status(422).send("Please use capitals in your password.");
+        res.json({
+          status: "error",
+          error: "Please use capitals in your password.",
+        });
       } else if (passwordCheck(body.password) == 3) {
-        res.status(422).send("Please use number in your password.");
+        res.json({
+          status: "error",
+          error: "Please use number in your password.",
+        });
       } else if (passwordCheck(body.password) == 4) {
-        res.status(422).send("Please use symbols in your password.");
+        res.json({
+          status: "error",
+          error: "Please use symbols in your password.",
+        });
       } else {
         next();
       }

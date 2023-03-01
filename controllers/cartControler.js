@@ -24,7 +24,8 @@ module.exports = {
         data: listModel,
       });
     } catch (error) {
-      res.status(500).send({
+      res.json({
+        status: "error",
         error: error,
       });
     }
@@ -55,7 +56,8 @@ module.exports = {
         data: total.toString(),
       });
     } catch (error) {
-      res.status(500).send({
+      res.json({
+        status: "error",
         error: error,
       });
     }
@@ -72,8 +74,9 @@ module.exports = {
         data: created,
       });
     } catch (error) {
-      res.status(400).send({
-        error: "User can not found",
+      res.json({
+        status: "error",
+        error: error,
       });
     }
   },
@@ -96,7 +99,8 @@ module.exports = {
         data: updatedCart,
       });
     } catch (error) {
-      res.status(500).send({
+      res.json({
+        status: "error",
         error: error,
       });
     }
@@ -123,7 +127,8 @@ module.exports = {
         });
       }
     } catch (error) {
-      res.status(500).send({
+      res.json({
+        status: "error",
         error: error,
       });
     }
@@ -152,7 +157,8 @@ module.exports = {
         status: "success",
       });
     } catch (error) {
-      res.status(500).send({
+      res.json({
+        status: "error",
         error: error,
       });
     }
