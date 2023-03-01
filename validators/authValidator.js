@@ -23,6 +23,10 @@ module.exports = {
         res.status(422).send({ status: "error", data: error });
       } else if (body.username < 1) {
         res.status(422).send("Please use a username.");
+      } else if (emailCheck(body.email)) {
+        res
+          .status(422)
+          .send("This email already use, please use different email");
       } else if (passwordCheck(body.password) == 1) {
         res.status(422).send("Please use lower case in your password.");
       } else if (passwordCheck(body.password) == 2) {
