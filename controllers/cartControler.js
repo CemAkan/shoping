@@ -18,9 +18,15 @@ module.exports = {
           customerId: personId,
         },
       });
+      var itemNumber = await model.findAll(cartModel, {
+        where: {
+          customerId: personId,
+        },
+      });
 
       res.json({
         status: "success",
+        number_of_Items: itemNumber.length,
         data: listModel,
       });
     } catch (error) {
@@ -70,6 +76,7 @@ module.exports = {
       let body = req.body;
 
       var created = await model.create(cartModel, body);
+
       res.json({
         status: "success",
         data: created,
