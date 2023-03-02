@@ -136,19 +136,11 @@ module.exports = {
   deleteAllItems: async (req, res, next) => {
     try {
       let personId = req.params.id;
-      const cart = await model.findAll(cartModel, {
+
+      await model.delete(cartModel, {
         where: {
           customerId: personId,
         },
-      });
-
-      cart.forEach((cartItem) => {
-        let itemId = cartItem.id;
-        model.delete(cartModel, {
-          where: {
-            id: itemId,
-          },
-        });
       });
 
       res.json({
