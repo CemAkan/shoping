@@ -2,14 +2,6 @@ const { userRoleTypes } = require("../../helpers/roleTypes");
 
 module.exports = (sequelize, Sequelize) => {
   return sequelize.define("user", {
-    customerId: {
-      type: Sequelize.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-      readOnly: true,
-      allowNUll: false,
-      unique: true,
-    },
     username: {
       type: Sequelize.STRING,
       allowNUll: false,
