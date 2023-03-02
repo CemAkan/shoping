@@ -48,10 +48,10 @@ module.exports = {
       let total = 0;
 
       for (const cartItem of cart) {
-        const itemId = cartItem.itemIds;
+        const itemId = cartItem.itemId;
         const items = await model.findOne(itemModel, {
           where: {
-            itemId: itemId,
+            id: itemId,
           },
         });
 
