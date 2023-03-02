@@ -39,6 +39,14 @@ itemModel.belongsTo(categoryModel, { foreignKey: "categoryId" });
 userModel.hasMany(likeModel, { foreignKey: "customerId" });
 likeModel.belongsTo(userModel, { foreignKey: "customerId" });
 
+// LIKE <-> ITEM
+itemModel.hasMany(likeModel, { foreignKey: "itemId" });
+likeModel.belongsTo(itemModel, { foreignKey: "itemId" });
+
+// CART <-> ITEM
+itemModel.hasMany(cartModel, { foreignKey: "itemId" });
+cartModel.belongsTo(itemModel, { foreignKey: "itemId" });
+
 //--> export <--
 module.exports = {
   Sequelize,
