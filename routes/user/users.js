@@ -4,7 +4,7 @@ var app = express();
 var router = express.Router();
 var {
   deleteUser,
-  listAllUsers,
+
   signIn,
   signUp,
   update_User,
@@ -13,9 +13,6 @@ const checkAuth = require("../../middleware/middleware");
 const { user_signUp, updateUser } = require("../../validators/authValidator");
 
 //--> METHODS FOR /user <--
-
-//--> list all user <--
-router.get("/list", checkAuth, listAllUsers);
 
 //--> login <--
 router.post("/sign-in", signIn);

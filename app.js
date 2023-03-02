@@ -11,6 +11,7 @@ var itemRouter = require("./routes/admin/items");
 var likeRouter = require("./routes/user/like");
 var cartRouter = require("./routes/user/cart");
 var categoryRouter = require("./routes/admin/category");
+var listAllUsersRouter = require("./routes/admin/listAllUsers");
 
 var app = express();
 
@@ -35,6 +36,7 @@ app.use("/cart", cartRouter);
 //admin routes
 app.use("/admin/category", checkAuth, categoryRouter);
 app.use("/admin/items", checkAuth, itemRouter);
+app.use("/admin/users-list", checkAuth, listAllUsersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
