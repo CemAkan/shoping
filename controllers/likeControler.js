@@ -5,8 +5,6 @@ var { likeModel, userModel } = require("../database/database");
 const checkAuth = require("../middleware/middleware");
 const model = require("../services/modelService");
 
-//--> routes for like <--
-
 // export variable
 module.exports = {
   //--> list all items that were added to like list <--
