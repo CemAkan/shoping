@@ -33,23 +33,24 @@ module.exports = {
   //--> get total price of all items that were added to cart <--
   totalPrice: async (req, res, next) => {
     try {
-      let personId = req.params.id;
+      const personId = req.params.id;
       const cart = await model.findAll(cartModel, {
         where: {
           customerId: personId,
         },
       });
       let total = 0;
-      await Promise.all(
-        cart.map(async (cartItem) => {
-          const item = await model.findOne(itemModel, {
-            where: {
-              itemId: cartItem.itemIds,
-            },
-          });
-          total += item.price;
-        })
-      );
+
+      for (const cartItem of cart) {
+        const itemId = cartItem.itemIds;
+        const items = await model.findOne(itemModel, {
+          where: {
+            itemId: itemId,
+          },
+        });
+
+        total = total + items.price;
+      }
 
       res.json({
         status: "success",
