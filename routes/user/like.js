@@ -5,7 +5,6 @@ var {
   listAllItems,
   deleteAllItems,
   deleteOneItem,
-  updateItem,
   addItem,
 } = require("../../controllers/likeControler");
 //--> routes for like <--
@@ -15,9 +14,6 @@ router.get("/list/:id", listAllItems);
 
 //--> add items to like list<--
 router.post("/add", addItem);
-
-//--> update a item in like list <--
-router.put("/update/:id", updateItem); //id = id
 
 //--> delete a item in like list <--
 router.delete("/delete-one/:id", deleteOneItem); //id = id

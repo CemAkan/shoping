@@ -49,29 +49,6 @@ module.exports = {
     }
   },
 
-  //--> update a item in like list <--
-  updateItem: async (req, res, next) => {
-    try {
-      let body = req.body;
-      let ID = req.params.id;
-      let condition = {
-        where: {
-          id: ID,
-        },
-      };
-
-      var updatedLike = await model.update(likeModel, body, condition);
-      res.json({
-        status: "success",
-        data: updatedLike,
-      });
-    } catch (error) {
-      res.status(500).send({
-        error: error,
-      });
-    }
-  },
-
   //--> delete a item in like list <--
   deleteOneItem: async (req, res, next) => {
     try {
