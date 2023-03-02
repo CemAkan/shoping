@@ -83,7 +83,7 @@ module.exports = {
       let ID = req.params.id;
       let condition = {
         where: {
-          customerId: ID,
+          id: ID,
         },
       };
 
@@ -106,7 +106,7 @@ module.exports = {
       let personId = req.params.id;
       var rowdeleted = await model.delete(userModel, {
         where: {
-          customerId: personId,
+          id: personId,
         },
       });
 
