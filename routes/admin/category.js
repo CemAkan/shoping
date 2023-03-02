@@ -15,7 +15,7 @@ router.get("/list", listAllCategory);
 router.post("/add", addCategory);
 
 //--> Update a category <--
-router.put("/update", updateCategory);
+router.put("/update/:id", updateCategory);
 
 //--> Delete a category <--
 router.delete("/delete/:id", deleteCategory);

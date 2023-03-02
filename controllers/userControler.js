@@ -80,9 +80,10 @@ module.exports = {
       let body = req.body;
       var hash = crypter(body.password);
       body.password = hash;
+      let ID = req.params.id;
       let condition = {
         where: {
-          customerId: body.customerId,
+          customerId: ID,
         },
       };
 
