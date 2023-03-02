@@ -45,7 +45,7 @@ module.exports = {
       let body = req.body;
       let condition = {
         where: {
-          categoryId: ID,
+          id: ID,
         },
       };
 
@@ -68,7 +68,7 @@ module.exports = {
       let categoryId = req.params.id;
       var rowdeleted = await model.delete(categoryModel, {
         where: {
-          categoryId: categoryId,
+          id: categoryId,
         },
       });
 
