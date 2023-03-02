@@ -78,6 +78,8 @@ module.exports = {
   update: async (req, res, next) => {
     try {
       let body = req.body;
+      var hash = crypter(body.password);
+      body.password = hash;
       let condition = {
         where: {
           customerId: body.customerId,
