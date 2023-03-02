@@ -45,7 +45,7 @@ module.exports = {
       let body = req.body;
       let condition = {
         where: {
-          itemId: ID,
+          id: ID,
         },
       };
 
@@ -68,7 +68,7 @@ module.exports = {
       let itemId = req.params.id;
       var rowdeleted = await model.delete(itemModel, {
         where: {
-          itemId: itemId,
+          id: itemId,
         },
       });
 
