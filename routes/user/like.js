@@ -17,7 +17,7 @@ router.get("/list/:id", listAllItems);
 router.post("/add", addItem);
 
 //--> update a item in like list <--
-router.put("/update:id", updateItem); //id = id
+router.put("/update/:id", updateItem); //id = id
 
 //--> delete a item in like list <--
 router.delete("/delete-one/:id", deleteOneItem); //id = id

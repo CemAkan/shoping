@@ -24,7 +24,7 @@ router.post("/sign-in", signIn);
 router.post("/sign-up", user_signUp, signUp);
 
 //--> update a user <--
-router.put("/update:id", updateUser, update_User);
+router.put("/update/:id", updateUser, update_User);
 
 //--> delete a user <--
 router.delete("/delete/:id", deleteUser);
