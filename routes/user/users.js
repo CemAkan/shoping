@@ -3,11 +3,11 @@ var express = require("express");
 var app = express();
 var router = express.Router();
 var {
-  deleting,
-  list,
+  deleteUser,
+  listAllUsers,
   signIn,
   signUp,
-  update,
+  update_User,
 } = require("../../controllers/userControler");
 const checkAuth = require("../../middleware/middleware");
 const { user_signUp, updateUser } = require("../../validators/authValidator");
@@ -15,7 +15,7 @@ const { user_signUp, updateUser } = require("../../validators/authValidator");
 //--> METHODS FOR /user <--
 
 //--> list all user <--
-router.get("/list", checkAuth, list);
+router.get("/list", checkAuth, listAllUsers);
 
 //--> login <--
 router.post("/sign-in", signIn);
@@ -24,10 +24,10 @@ router.post("/sign-in", signIn);
 router.post("/sign-up", user_signUp, signUp);
 
 //--> update a user <--
-router.put("/update", updateUser, update);
+router.put("/update", updateUser, update_User);
 
 //--> delete a user <--
-router.delete("/delete/:id", deleting);
+router.delete("/delete/:id", deleteUser);
 
 //exporting
 module.exports = router;

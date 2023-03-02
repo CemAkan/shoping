@@ -2,22 +2,22 @@
 var express = require("express");
 var router = express.Router();
 var {
-  add,
-  list,
-  update,
-  deleting,
+  addItem,
+  listAllItem,
+  updateItem,
+  deleteItem,
 } = require("../../controllers/itemControler");
 
 //--> List all items <--
-router.get("/list", list);
+router.get("/list", listAllItem);
 
 //--> Add a item <--
-router.post("/add", add);
+router.post("/add", addItem);
 
 //--> Update a item <--
-router.put("/update", update);
+router.put("/update", updateItem);
 
 //--> Delete a item <--
-router.delete("/delete/:id", deleting);
+router.delete("/delete/:id", deleteItem);
 
 module.exports = router;

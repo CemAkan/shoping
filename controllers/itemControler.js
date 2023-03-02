@@ -8,7 +8,7 @@ const model = require("../services/modelService");
 // export variable
 module.exports = {
   //--> List all items <--
-  list: async (req, res, next) => {
+  listAllItem: async (req, res, next) => {
     try {
       await model.findAll(itemModel).then((items) => {
         res.json({ status: "success", data: items });
@@ -22,7 +22,7 @@ module.exports = {
   },
 
   //--> Add a item <--
-  add: async (req, res, next) => {
+  addItem: async (req, res, next) => {
     try {
       let body = req.body;
       var createdItem = await model.create(itemModel, body);
@@ -39,7 +39,7 @@ module.exports = {
   },
 
   //--> Update a item <--
-  update: async (req, res, next) => {
+  updateItem: async (req, res, next) => {
     try {
       let body = req.body;
       let condition = {
@@ -48,9 +48,7 @@ module.exports = {
         },
       };
 
-      const foundItem = await model.findOne(itemModel, condition);
-
-      var updatedItem = await model.update(foundItem, body);
+      var updatedItem = await model.update(itemModel, body, condition);
       res.json({
         status: "success",
         data: updatedItem,
@@ -64,7 +62,7 @@ module.exports = {
   },
 
   //--> Delete a item <--
-  deleting: async (req, res, next) => {
+  deleteItem: async (req, res, next) => {
     try {
       let itemId = req.params.id;
       var rowdeleted = await model.delete(itemModel, {

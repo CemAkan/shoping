@@ -14,7 +14,7 @@ const model = require("../services/modelService");
 // export variable
 module.exports = {
   //--> list all user <--
-  list: async (req, res, next) => {
+  listAllUsers: async (req, res, next) => {
     try {
       await model.findAll(userModel).then((users) => {
         res.json({ status: "success", data: users });
@@ -75,7 +75,7 @@ module.exports = {
   },
 
   //--> update a user <--
-  update: async (req, res, next) => {
+  update_User: async (req, res, next) => {
     try {
       let body = req.body;
       var hash = crypter(body.password);
@@ -86,9 +86,7 @@ module.exports = {
         },
       };
 
-      const foundUser = await model.findOne(userModel, condition);
-
-      var updatedUser = await model.update(foundUser, body);
+      var updatedUser = await model.update(userModel, body, condition);
       res.json({
         status: "success",
         data: updatedUser,
@@ -102,7 +100,7 @@ module.exports = {
   },
 
   //--> delete a user <--
-  deleting: async (req, res, next) => {
+  deleteUser: async (req, res, next) => {
     try {
       let personId = req.params.id;
       var rowdeleted = await model.delete(userModel, {

@@ -8,7 +8,7 @@ const model = require("../services/modelService");
 // export variable
 module.exports = {
   //--> List all categories <--
-  list: async (req, res, next) => {
+  listAllCategory: async (req, res, next) => {
     try {
       await model.findAll(categoryModel).then((categories) => {
         res.json({ status: "success", data: categories });
@@ -22,7 +22,7 @@ module.exports = {
   },
 
   //--> Add a category <--
-  add: async (req, res, next) => {
+  addCategory: async (req, res, next) => {
     try {
       let body = req.body;
       var createdCategory = await model.create(categoryModel, body);
@@ -39,7 +39,7 @@ module.exports = {
   },
 
   //--> Update a category <--
-  update: async (req, res, next) => {
+  updateCategory: async (req, res, next) => {
     try {
       let body = req.body;
       let condition = {
@@ -48,9 +48,7 @@ module.exports = {
         },
       };
 
-      const foundCategory = await model.findOne(categoryModel, condition);
-
-      var updatedCategory = await model.update(foundCategory, body);
+      var updatedCategory = await model.update(categoryModel, body, condition);
       res.json({
         status: "success",
         data: updatedCategory,
@@ -64,7 +62,7 @@ module.exports = {
   },
 
   //--> Delete a category <--
-  deleting: async (req, res, next) => {
+  deleteCategory: async (req, res, next) => {
     try {
       let categoryId = req.params.id;
       var rowdeleted = await model.delete(categoryModel, {

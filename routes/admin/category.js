@@ -2,22 +2,22 @@
 var express = require("express");
 var router = express.Router();
 var {
-  add,
-  list,
-  update,
-  deleting,
+  deleteCategory,
+  addCategory,
+  listAllCategory,
+  updateCategory,
 } = require("../../controllers/categoryControler");
 
 //--> List all categories <--
-router.get("/list", list);
+router.get("/list", listAllCategory);
 
 //--> Add a category <--
-router.post("/add", add);
+router.post("/add", addCategory);
 
 //--> Update a category <--
-router.put("/update", update);
+router.put("/update", updateCategory);
 
 //--> Delete a category <--
-router.delete("/delete/:id", deleting);
+router.delete("/delete/:id", deleteCategory);
 
 module.exports = router;

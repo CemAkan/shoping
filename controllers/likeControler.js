@@ -10,7 +10,7 @@ const model = require("../services/modelService");
 // export variable
 module.exports = {
   //--> list all items that were added to like list <--
-  list: async (req, res, next) => {
+  listAllItems: async (req, res, next) => {
     try {
       let personId = req.params.id;
       var listModel = await model.findAll(likeModel, {
@@ -32,7 +32,7 @@ module.exports = {
   },
 
   //--> add items to like list<--
-  add: async (req, res, next) => {
+  addItem: async (req, res, next) => {
     try {
       let body = req.body;
 
@@ -50,7 +50,7 @@ module.exports = {
   },
 
   //--> update a item in like list <--
-  update: async (req, res, next) => {
+  updateItem: async (req, res, next) => {
     try {
       let body = req.body;
       let condition = {
@@ -59,9 +59,7 @@ module.exports = {
         },
       };
 
-      const foundLike = await model.findOne(likeModel, condition);
-
-      var updatedLike = await model.update(foundLike, body);
+      var updatedLike = await model.update(likeModel, body, condition);
       res.json({
         status: "success",
         data: updatedLike,
@@ -74,7 +72,7 @@ module.exports = {
   },
 
   //--> delete a item in like list <--
-  deleteOne: async (req, res, next) => {
+  deleteOneItem: async (req, res, next) => {
     try {
       let ID = req.params.id;
       var rowdeleted = await model.delete(likeModel, {
@@ -102,7 +100,7 @@ module.exports = {
   },
 
   //delete like list
-  deleteAll: async (req, res, next) => {
+  deleteAllItems: async (req, res, next) => {
     try {
       let personId = req.params.id;
       const like = await model.findAll(likeModel, {

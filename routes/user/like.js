@@ -2,28 +2,28 @@
 var express = require("express");
 var router = express.Router();
 var {
-  list,
-  update,
-  add,
-  deleteAll,
-  deleteOne,
+  listAllItems,
+  deleteAllItems,
+  deleteOneItem,
+  updateItem,
+  addItem,
 } = require("../../controllers/likeControler");
 //--> routes for like <--
 
 //--> list all items that were added to like list <--
-router.get("/list/:id", list);
+router.get("/list/:id", listAllItems);
 
 //--> add items to like list<--
-router.post("/add", add);
+router.post("/add", addItem);
 
 //--> update a item in like list <--
-router.put("/update", update); //id = id
+router.put("/update", updateItem); //id = id
 
 //--> delete a item in like list <--
-router.delete("/delete-one/:id", deleteOne); //id = id
+router.delete("/delete-one/:id", deleteOneItem); //id = id
 
 //--> delete like list <--
-router.delete("/delete-all/:id", deleteAll); //id = customerId
+router.delete("/delete-all/:id", deleteAllItems); //id = customerId
 
 //exporting
 module.exports = router;

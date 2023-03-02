@@ -10,7 +10,7 @@ const model = require("../services/modelService");
 
 module.exports = {
   //--> list all items that were added to cart <--
-  list: async (req, res, next) => {
+  listAllItems: async (req, res, next) => {
     try {
       let personId = req.params.id;
       var listModel = await model.findAll(cartModel, {
@@ -31,7 +31,7 @@ module.exports = {
     }
   },
   //--> get total price of all items that were added to cart <--
-  price: async (req, res, next) => {
+  totalPrice: async (req, res, next) => {
     try {
       let personId = req.params.id;
       const cart = await model.findAll(cartModel, {
@@ -64,7 +64,7 @@ module.exports = {
   },
 
   //--> add items to cart list <--
-  add: async (req, res, next) => {
+  addItem: async (req, res, next) => {
     try {
       let body = req.body;
 
@@ -82,7 +82,7 @@ module.exports = {
   },
 
   //--> update a item in cart <--
-  update: async (req, res, next) => {
+  updateItem: async (req, res, next) => {
     try {
       let body = req.body;
       let condition = {
@@ -91,9 +91,7 @@ module.exports = {
         },
       };
 
-      const foundCart = await model.findOne(cartModel, condition);
-
-      var updatedCart = await model.update(foundCart, body);
+      var updatedCart = await model.update(cartModel, body, condition);
       res.json({
         status: "success",
         data: updatedCart,
@@ -107,7 +105,7 @@ module.exports = {
   },
 
   //--> delete a item in cart <--
-  deleteOne: async (req, res, next) => {
+  deleteOneItem: async (req, res, next) => {
     try {
       let cartID = req.params.id;
       var rowdeleted = await model.delete(cartModel, {
@@ -135,7 +133,7 @@ module.exports = {
   },
 
   //delete cart
-  deleteAll: async (req, res, next) => {
+  deleteAllItems: async (req, res, next) => {
     try {
       let personId = req.params.id;
       const cart = await model.findAll(cartModel, {
