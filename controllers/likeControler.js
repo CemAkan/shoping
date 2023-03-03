@@ -13,7 +13,7 @@ module.exports = {
       let personId = req.params.id;
       var listModel = await model.findAll(likeModel, {
         where: {
-          customerId: personId,
+          userId: personId,
         },
       });
 
@@ -82,7 +82,7 @@ module.exports = {
 
       await model.delete(likeModel, {
         where: {
-          customerId: personId,
+          userId: personId,
         },
       });
 
