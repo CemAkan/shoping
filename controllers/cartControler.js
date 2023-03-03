@@ -1,6 +1,5 @@
 //--> Module dependencies <--
 var express = require("express");
-const { forEach } = require("underscore");
 var router = express.Router();
 var { cartModel, userModel, itemModel } = require("../database/database");
 const checkAuth = require("../middleware/middleware");
@@ -15,12 +14,12 @@ module.exports = {
       let personId = req.params.id;
       var listModel = await model.findAll(cartModel, {
         where: {
-          customerId: personId,
+          userId: personId,
         },
       });
       var itemNumber = await model.findAll(cartModel, {
         where: {
-          customerId: personId,
+          userId: personId,
         },
       });
 
@@ -42,7 +41,7 @@ module.exports = {
       const personId = req.params.id;
       const cart = await model.findAll(cartModel, {
         where: {
-          customerId: personId,
+          userId: personId,
         },
       });
       let total = 0;
@@ -148,7 +147,7 @@ module.exports = {
 
       await model.delete(cartModel, {
         where: {
-          customerId: personId,
+          userId: personId,
         },
       });
 
