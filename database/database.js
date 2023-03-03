@@ -28,23 +28,23 @@ const itemModel = item(sequelize, Sequelize);
 //--> Associations <--
 
 // CART <-> USER
-userModel.hasMany(cartModel, { foreignKey: "customerId" });
-cartModel.belongsTo(userModel, { foreignKey: "customerId" });
+userModel.hasMany(cartModel, { foreignKey: "userId" });
+cartModel.belongsTo(userModel, { foreignKey: "userId" });
 
 // ITEM <-> CATEGORY
-categoryModel.hasMany(itemModel, { foreignKey: "categoryId" });
-itemModel.belongsTo(categoryModel, { foreignKey: "categoryId" });
+categoryModel.hasMany(itemModel, { foreignKey: "category_Id" });
+itemModel.belongsTo(categoryModel, { foreignKey: "category_Id" });
 
 // LIKE <-> USER
-userModel.hasMany(likeModel, { foreignKey: "customerId" });
-likeModel.belongsTo(userModel, { foreignKey: "customerId" });
+userModel.hasMany(likeModel, { foreignKey: "userId" });
+likeModel.belongsTo(userModel, { foreignKey: "userId" });
 
 // LIKE <-> ITEM
 itemModel.hasMany(likeModel, { foreignKey: "itemId" });
 likeModel.belongsTo(itemModel, { foreignKey: "itemId" });
 
 // CART <-> ITEM
-itemModel.hasMany(cartModel, { foreignKey: "itemId" });
+itemModel.hasMany(cartModel, { foreignKey: "itemIds" });
 cartModel.belongsTo(itemModel, { foreignKey: "itemId" });
 
 //--> export <--
