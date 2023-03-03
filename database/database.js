@@ -44,7 +44,7 @@ itemModel.hasMany(likeModel, { foreignKey: "itemId" });
 likeModel.belongsTo(itemModel, { foreignKey: "itemId" });
 
 // CART <-> ITEM
-itemModel.hasMany(cartModel, { foreignKey: "itemIds" });
+itemModel.hasMany(cartModel, { foreignKey: "itemId" });
 cartModel.belongsTo(itemModel, { foreignKey: "itemId" });
 
 //--> export <--
