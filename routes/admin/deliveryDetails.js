@@ -1,18 +1,23 @@
 //--> Module dependencies.<--
 var express = require("express");
 var router = express.Router();
-//controller requirement will comes here
+var {
+  listAllDeliveryDetails,
+  deleteDeliveryDetail,
+  updateDeliveryDetail,
+  addDeliveryDetail,
+} = require("../../controllers/deliveryDetailsController");
 
 //--> List all details <--
-router.get("/list");
+router.get("/list", listAllDeliveryDetails);
 
 //--> Add a detail <--
-router.post("/add");
+router.post("/add", addDeliveryDetail);
 
 //--> Update a detail <--
-router.put("/update/:id");
+router.put("/update/:id", updateDeliveryDetail);
 
 //--> Delete a detail <--
-router.delete("/delete/:id");
+router.delete("/delete/:id", deleteDeliveryDetail);
 
 module.exports = router;

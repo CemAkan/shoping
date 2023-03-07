@@ -1,18 +1,23 @@
 //--> Module dependencies.<--
 var express = require("express");
 var router = express.Router();
-//controller requirement will comes here
+var {
+  listAllAnnouncement,
+  deleteAnnouncement,
+  addAnnouncement,
+  updateAnnouncement,
+} = require("../../controllers/announcementController");
 
 //--> List all announcements <--
-router.get("/list");
+router.get("/list", listAllAnnouncement);
 
 //--> Add a announcement <--
-router.post("/add");
+router.post("/add", addAnnouncement);
 
 //--> Update a announcement <--
-router.put("/update/:id");
+router.put("/update/:id", updateAnnouncement);
 
 //--> Delete a announcement <--
-router.delete("/delete/:id");
+router.delete("/delete/:id", deleteAnnouncement);
 
 module.exports = router;
