@@ -49,6 +49,7 @@ module.exports = (sequelize, Sequelize) => {
     gender: {
       type: Sequelize.ENUM("M", "F", "Other"),
       allowNull: false,
+      defaultValue: "Other",
     },
   });
 };
