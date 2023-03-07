@@ -20,7 +20,7 @@ module.exports = {
     validator(req.body, validationRule, {}, (error, status) => {
       if (!status) {
         res.status(422).send({ status: "error", data: error });
-      } else if (body.username < 1) {
+      } else if (body.username.length < 1) {
         res.json({
           status: "error",
           error: "Please use a username.",
@@ -64,7 +64,7 @@ module.exports = {
     validator(req.body, validationRule, {}, (error, status) => {
       if (!status) {
         res.status(422).send({ status: "error", data: error });
-      } else if (body.username < 1) {
+      } else if (body.username.length < 1) {
         res.json({
           status: "error",
           error: "Please use a username.",
