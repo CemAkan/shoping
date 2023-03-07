@@ -29,11 +29,11 @@ module.exports = {
   //--> login <--
   signIn: async (req, res, next) => {
     try {
-      let body = _.pick(req.body, "username", "password");
+      let body = _.pick(req.body, "phone", "password");
       var hash = crypter(body.password);
       var login = await model.findOne(userModel, {
         where: {
-          username: body.username,
+          phone: body.phone,
           password: hash,
         },
       });
