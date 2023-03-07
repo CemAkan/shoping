@@ -10,7 +10,7 @@ var {
 //--> routes for like <--
 
 //--> list all items that were added to like list <--
-router.get("/list/:id", listAllItems);
+router.get("/list/:phone", listAllItems);
 
 //--> add items to like list<--
 router.post("/add", addItem);
@@ -19,7 +19,7 @@ router.post("/add", addItem);
 router.delete("/delete-one/:id", deleteOneItem); //id = id
 
 //--> delete like list <--
-router.delete("/delete-all/:id", deleteAllItems); //id = customerId
+router.delete("/delete-all/:phone", deleteAllItems); //id = customerId
 
 //exporting
 module.exports = router;

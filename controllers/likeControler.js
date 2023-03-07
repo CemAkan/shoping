@@ -10,10 +10,10 @@ module.exports = {
   //--> list all items that were added to like list <--
   listAllItems: async (req, res, next) => {
     try {
-      let personId = req.params.id;
+      let personId = req.params.phone;
       var listModel = await model.findAll(likeModel, {
         where: {
-          userId: personId,
+          phone: phone,
         },
       });
 
@@ -78,11 +78,11 @@ module.exports = {
   //delete like list
   deleteAllItems: async (req, res, next) => {
     try {
-      let personId = req.params.id;
+      let phone = req.params.phone;
 
       await model.delete(likeModel, {
         where: {
-          userId: personId,
+          phone: phone,
         },
       });
 

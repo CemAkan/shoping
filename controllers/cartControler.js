@@ -11,21 +11,16 @@ module.exports = {
   //--> list all items that were added to cart <--
   listAllItems: async (req, res, next) => {
     try {
-      let personId = req.params.id;
+      let phone = req.params.phone;
       var listModel = await model.findAll(cartModel, {
         where: {
-          userId: personId,
-        },
-      });
-      var itemNumber = await model.findAll(cartModel, {
-        where: {
-          userId: personId,
+          phone: phone,
         },
       });
 
       res.json({
         status: "success",
-        number_of_Items: itemNumber.length,
+        number_of_Items: listModel.length,
         data: listModel,
       });
     } catch (error) {
@@ -38,10 +33,10 @@ module.exports = {
   //--> get total price of all items that were added to cart <--
   totalPrice: async (req, res, next) => {
     try {
-      const personId = req.params.id;
+      const phone = req.params.phone;
       const cart = await model.findAll(cartModel, {
         where: {
-          userId: personId,
+          phone: phone,
         },
       });
       let total = 0;
@@ -143,11 +138,11 @@ module.exports = {
   //delete cart
   deleteAllItems: async (req, res, next) => {
     try {
-      let personId = req.params.id;
+      let phone = req.params.phone;
 
       await model.delete(cartModel, {
         where: {
-          userId: personId,
+          phone: phone,
         },
       });
 

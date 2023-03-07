@@ -13,13 +13,13 @@ var {
 //--> routes for cart <--
 
 //--> list all items that were added to cart <--
-router.get("/list/:id", listAllItems); //id = customerId
+router.get("/list/:phone", listAllItems);
 
 //--> get total price of all items that were added to cart <--
-router.get("/price/:id", totalPrice); //id = customerId
+router.get("/price/:phone", totalPrice);
 
 //--> add items to cart <--
-router.post("/add", addItem); //id = customerId
+router.post("/add", addItem);
 
 //--> update a item in cart <--
 router.put("/update/:id", updateItem); //id = id
@@ -28,7 +28,7 @@ router.put("/update/:id", updateItem); //id = id
 router.delete("/delete-one/:id", deleteOneItem); //id = id
 
 //--> delete cart <--
-router.delete("/delete-all/:id", deleteAllItems); //id = customerId
+router.delete("/delete-all/:phone", deleteAllItems);
 
 //exporting
 module.exports = router;
