@@ -13,5 +13,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.FLOAT,
       allowNUll: false,
     },
+    //describe to item details
+    description: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
   });
 };
