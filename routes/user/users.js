@@ -4,7 +4,6 @@ var app = express();
 var router = express.Router();
 var {
   deleteUser,
-
   signIn,
   signUp,
   update_User,

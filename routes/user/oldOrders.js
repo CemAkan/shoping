@@ -1,12 +1,15 @@
 //--> Module dependencies.<--
 var express = require("express");
 var router = express.Router();
-//controller requirement will comes here
+var {
+  addOldOrders,
+  listAllOldOrders,
+} = require("../../controllers/oldOrdersController");
 
 //--> List all orders <--
-router.get("/list");
+router.get("/list", listAllOldOrders);
 
 //--> Add a order <--
-router.post("/add");
+router.post("/add", addOldOrders);
 
 module.exports = router;

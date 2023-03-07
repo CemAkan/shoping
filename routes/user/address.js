@@ -1,18 +1,23 @@
 //--> Module dependencies.<--
 var express = require("express");
 var router = express.Router();
-//controller requirement will comes here
+var {
+  listAllAddress,
+  addAddress,
+  deleteAddress,
+  updateAddress,
+} = require("../../controllers/addressController");
 
 //--> List all addresses <--
-router.get("/list");
+router.get("/list", listAllAddress);
 
 //--> Add a address <--
-router.post("/add");
+router.post("/add", addAddress);
 
 //--> Update a address <--
-router.put("/update/:id");
+router.put("/update/:id", updateAddress);
 
 //--> Delete a address <--
-router.delete("/delete/:id");
+router.delete("/delete/:id", deleteAddress);
 
 module.exports = router;

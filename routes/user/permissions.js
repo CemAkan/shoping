@@ -1,12 +1,15 @@
 //--> Module dependencies.<--
 var express = require("express");
 var router = express.Router();
-//controller requirement will comes here
+var {
+  listAllPermissions,
+  updatePermissions,
+} = require("../../controllers/permissionsController");
 
 //--> List permissions <--
-router.get("/list");
+router.get("/list", listAllPermissions);
 
 //--> Update a permission <--
-router.put("/update/:id");
+router.put("/update/:id", updatePermissions);
 
 module.exports = router;
