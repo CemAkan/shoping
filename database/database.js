@@ -55,27 +55,62 @@ const similarItemsModel = similarItems(sequelize, Sequelize);
 const deliveryDetailsModel = deliveryDetails(sequelize, Sequelize);
 const oldOrdersModel = oldOrders(sequelize, Sequelize);
 
-//--> Associations <--
-
-// CART <-> USER
-userModel.hasMany(cartModel, { foreignKey: "phone" });
-cartModel.belongsTo(userModel, { foreignKey: "phone" });
+//--> Associations with category <--
 
 // ITEM <-> CATEGORY
 categoryModel.hasMany(itemModel, { foreignKey: "category_Id" });
 itemModel.belongsTo(categoryModel, { foreignKey: "category_Id" });
 
-// LIKE <-> USER
-userModel.hasMany(likeModel, { foreignKey: "phone" });
-likeModel.belongsTo(userModel, { foreignKey: "phone" });
+//--> Associations with item <--
 
 // LIKE <-> ITEM
 itemModel.hasMany(likeModel, { foreignKey: "itemId" });
 likeModel.belongsTo(itemModel, { foreignKey: "itemId" });
 
-// CART <-> ITEM
-itemModel.hasMany(cartModel, { foreignKey: "itemId" });
-cartModel.belongsTo(itemModel, { foreignKey: "itemId" });
+// ANNOUNCEMENTS <-> ITEM
+itemModel.hasMany(announcementsModel, { foreignKey: "itemId" });
+announcementsModel.belongsTo(itemModel, { foreignKey: "itemId" });
+
+// SIMILAR ITEMS <-> ITEM
+itemModel.hasMany(similarItemsModel, { foreignKey: "itemId" });
+similarItemsModel.belongsTo(itemModel, { foreignKey: "itemId" });
+
+// ITEM VARIANTS <-> ITEM
+itemModel.hasMany(itemVariantsModel, { foreignKey: "itemId" });
+itemVariantsModel.belongsTo(itemModel, { foreignKey: "itemId" });
+
+//--> Associations with user <--
+
+// CART <-> USER
+userModel.hasMany(cartModel, { foreignKey: "phone" });
+cartModel.belongsTo(userModel, { foreignKey: "phone" });
+
+// LIKE <-> USER
+userModel.hasMany(likeModel, { foreignKey: "phone" });
+likeModel.belongsTo(userModel, { foreignKey: "phone" });
+
+//CARD <-> USER
+userModel.hasMany(cardModel, { foreignKey: "phone" });
+cardModel.belongsTo(userModel, { foreignKey: "phone" });
+
+//PERMISSIONS <-> USER
+userModel.hasMany(permissionsModel, { foreignKey: "phone" });
+permissionsModel.belongsTo(userModel, { foreignKey: "phone" });
+
+//ADDRESS <-> USER
+userModel.hasMany(addressModel, { foreignKey: "phone" });
+addressModel.belongsTo(userModel, { foreignKey: "phone" });
+
+//OLD ORDERS <-> USER
+userModel.hasMany(oldOrdersModel, { foreignKey: "phone" });
+oldOrdersModel.belongsTo(userModel, { foreignKey: "phone" });
+
+//--> Associations with address <--
+
+deliveryDetailsModel.hasMany(addressModel, { foreignKey: "distanceCategory" });
+addressModel.belongsTo(deliveryDetailsModel, {
+  foreignKey: "distanceCategory",
+});
 
 //--> exporting variables <--
 module.exports = {
