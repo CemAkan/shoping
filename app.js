@@ -26,6 +26,8 @@ var announcementsRouter = require("./routes/admin/announcements");
 var deliveryDetailsRouter = require("./routes/admin/deliveryDetails");
 var itemVariantsRouter = require("./routes/admin/itemVariants");
 var similarItemsRouter = require("./routes/admin/similarItems");
+var announcementPhotoRouter = require("./routes/admin/announcementPhoto");
+var itemPhotoRouter = require("./routes/admin/itemPhoto");
 
 var app = express();
 
@@ -60,6 +62,8 @@ app.use("/admin/announcement", checkAuth, announcementsRouter);
 app.use("/admin/deliveryDetails", checkAuth, deliveryDetailsRouter);
 app.use("/admin/itemVariants", checkAuth, itemVariantsRouter);
 app.use("/admin/similarItems", checkAuth, similarItemsRouter);
+app.use("/admin/photo-item", checkAuth, itemPhotoRouter);
+app.use("/admin/photo-announcement", checkAuth, announcementPhotoRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
