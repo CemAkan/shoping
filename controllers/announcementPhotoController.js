@@ -3,53 +3,56 @@ var express = require("express");
 var router = express.Router();
 var { announcementPhotoModel } = require("../database/database");
 const model = require("../services/modelService");
-var uploadDO = require("../services/photoUpload");
 
 // export variable
 module.exports = {
-  //--> Add a photo <--
   addPhoto: async (req, res, next) => {
+    // const { photoCategory, isStored } = req.body;
+    //const { location, mimetype, size } = req.file;
+
+    const t = await sequelize.transaction();
+    var counter = 0;
     try {
-      uploadDO.array("file", 10);
-      let body = req.body;
-      var createdPhoto = await model.create(announcementPhotoModel, body);
+      for (const photo of req.files) {
+        await modelService.findOrCreate(announcementPhotoModel, {
+          where: {
+            photoLink: photo.location,
+            photoType: photo.mimetype,
+            photoSize: photo.size,
+          },
+          defaults: {
+            photoLink: photo.location,
+            photoType: photo.mimetype,
+            photoSize: photo.size,
+          },
+        });
+        counter++;
+      }
+
+      await t.commit();
+
       res.json({
         status: "success",
-        data: createdPhoto,
+        data: counter + " new photos were added.",
       });
     } catch (error) {
-      res.json({
-        status: "error",
-        error: error,
-      });
+      res.status(422).send({ status: "Error", data: error.message });
+      await t.rollback();
+      next(error);
     }
   },
 
-  //--> Delete a photo <--
   deletePhoto: async (req, res, next) => {
+    const photoId = req.params.id;
     try {
-      let photoId = req.params.id;
-      var rowdeleted = await model.delete(announcementPhotoModel, {
-        where: {
-          id: photoId,
-        },
+      const deletedPhoto = await modelService.delete(announcementPhotoModel, {
+        where: { id: photoId },
       });
 
-      if (rowdeleted === 0) {
-        res.status(404).send({
-          error: "Photo can not found.",
-        });
-      } else {
-        res.json({
-          status: "success",
-          data: rowdeleted,
-        });
-      }
+      res.json({ status: "success", data: deletedPhoto });
     } catch (error) {
-      res.json({
-        status: "error",
-        error: error,
-      });
+      res.status(500).json({ status: "error", data: error });
+      next(error);
     }
   },
 };
