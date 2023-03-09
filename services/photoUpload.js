@@ -62,7 +62,7 @@ module.exports = multer({
     bucket: process.env.DO_BUCKET_NAME,
     acl: "public-read",
     key: function (request, file, cb) {
-      let convertedName = Date.now() + "-" + fileName(file.originalname);
+      let convertedName = "cem";
       var fullPath = "images/" + convertedName;
       cb(null, fullPath);
     },
