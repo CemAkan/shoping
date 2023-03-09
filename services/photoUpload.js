@@ -7,12 +7,14 @@ require("dotenv").config();
 
 const app = express();
 
-const spacesEndpoint = new aws.Endpoint(process.env.spacesEndpoint);
+const spacesEndpoint = new aws.Endpoint(process.env.ENDPOINT);
 const s3 = new aws.S3({
   endpoint: spacesEndpoint,
   accessKeyId: process.env.DO_ACCESS_KEY,
   secretAccessKey: process.env.DO_SECRET_ACCESS_KEY,
 });
+
+console.log(process.env.spacesEndpoint);
 
 const fileFilter = (req, file, cb) => {
   if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
@@ -53,7 +55,7 @@ const fileName = (originalname) => {
   return convertedName;
 };
 
-const uploadDO = multer({
+module.exports = multer({
   fileFilter,
   storage: multerS3({
     s3: s3,
@@ -62,10 +64,7 @@ const uploadDO = multer({
     key: function (request, file, cb) {
       let convertedName = Date.now() + "-" + fileName(file.originalname);
       var fullPath = "images/" + convertedName;
-      console.log(file);
       cb(null, fullPath);
     },
   }),
 });
-
-module.exports = uploadDO;
