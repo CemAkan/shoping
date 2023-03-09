@@ -22,6 +22,10 @@ var similarItems = require("../models/items/similarItems");
 var deliveryDetails = require("../models/delivery/deliveryDetails");
 var oldOrders = require("../models/delivery/oldOrders");
 
+//photo models
+var itemPhoto = require("../models/photos/itemPhoto");
+var announcementPhoto = require("../models/photos/announcementPhoto");
+
 //--> Database Connection <--
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(
@@ -54,6 +58,10 @@ const similarItemsModel = similarItems(sequelize, Sequelize);
 //delivery models
 const deliveryDetailsModel = deliveryDetails(sequelize, Sequelize);
 const oldOrdersModel = oldOrders(sequelize, Sequelize);
+
+//photo models
+var itemPhotoModel = itemPhoto(sequelize, Sequelize);
+var announcementPhotoModel = announcementPhoto(sequelize, Sequelize);
 
 //--> Associations with category <--
 
@@ -107,12 +115,27 @@ oldOrdersModel.belongsTo(userModel, { foreignKey: "phone" });
 
 //--> Associations with address <--
 
+//DELIVERY DETAILS <-> ADDRESS
 deliveryDetailsModel.hasMany(addressModel, { foreignKey: "distanceCategory" });
 addressModel.belongsTo(deliveryDetailsModel, {
   foreignKey: "distanceCategory",
 });
 
-//--> exporting variables <--
+// //--> Associations with photo <--
+
+// //ITEM <-> ITEM PHOTO
+// itemModel.hasOne(itemPhotoModel, { foreignKey: "itemId" });
+// itemPhotoModel.belongsTo(itemModel, { foreignKey: "itemId" });
+
+// //ANNOUNCEMENTS <-> ANNOUNCEMENT PHOTO
+// announcementsModel.hasOne(announcementPhotoModel, {
+//   foreignKey: "announcementId",
+// });
+// announcementPhotoModel.belongsTo(announcementsModel, {
+//   foreignKey: "announcementId",
+// });
+
+//--> Exporting variables <--
 module.exports = {
   Sequelize,
   sequelize,
@@ -129,4 +152,6 @@ module.exports = {
   categoryModel,
   likeModel,
   itemModel,
+  itemPhotoModel,
+  announcementPhotoModel,
 };
