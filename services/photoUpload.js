@@ -7,7 +7,7 @@ require("dotenv").config();
 
 const app = express();
 
-const spacesEndpoint = new aws.Endpoint("fra1.digitaloceanspaces.com");
+const spacesEndpoint = new aws.Endpoint(process.env.spacesEndpoint);
 const s3 = new aws.S3({
   endpoint: spacesEndpoint,
   accessKeyId: process.env.DO_ACCESS_KEY,
