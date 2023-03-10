@@ -1,8 +1,7 @@
 //--> Module dependencies.<--
 var express = require("express");
 var router = express.Router();
-var { itemModel, categoryModel } = require("../database/database");
-const checkAuth = require("../middleware/middleware");
+var { itemModel, photoModel, sequelize } = require("../database/database");
 const model = require("../services/modelService");
 
 // export variable
@@ -25,7 +24,41 @@ module.exports = {
   addItem: async (req, res, next) => {
     try {
       let body = req.body;
-      var createdItem = await model.create(itemModel, body);
+      var createdItem = await model.create(itemModel, {
+        name: body.name,
+        price: body.price,
+        category_Id: body.category_Id,
+        description: body.description,
+      });
+
+      body.itemId = createdItem.id;
+
+      try {
+        const t = await sequelize.transaction();
+
+        for (const photo of req.files) {
+          await model.findOrCreate(photoModel, {
+            where: {
+              photoLink: photo.location,
+              photoType: photo.mimetype,
+              photoSize: photo.size,
+              itemId: req.body.itemId,
+            },
+            defaults: {
+              photoLink: photo.location,
+              photoType: photo.mimetype,
+              photoSize: photo.size,
+              itemId: req.body.itemId,
+            },
+          });
+        }
+
+        await t.commit();
+      } catch (error) {
+        res.status(422).send({ status: "Error", data: error.message });
+        await t.rollback();
+      }
+
       res.json({
         status: "success",
         data: createdItem,

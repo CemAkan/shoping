@@ -1,8 +1,13 @@
 //--> Module dependencies.<--
 var express = require("express");
 var router = express.Router();
-var { announcementsModel } = require("../database/database");
+var {
+  announcementsModel,
+  photoModel,
+  sequelize,
+} = require("../database/database");
 const model = require("../services/modelService");
+var uploadImageDO = require("../services/photoUpload");
 
 // export variable
 module.exports = {
@@ -24,7 +29,39 @@ module.exports = {
   addAnnouncement: async (req, res, next) => {
     try {
       let body = req.body;
-      var createdAnnouncement = await model.create(announcementsModel, body);
+      var createdAnnouncement = await model.create(announcementsModel, {
+        details: body.details,
+        itemId: body.itemId,
+      });
+
+      body.announcementId = createdAnnouncement.id;
+
+      try {
+        const t = await sequelize.transaction();
+
+        for (const photo of req.files) {
+          await model.findOrCreate(photoModel, {
+            where: {
+              photoLink: photo.location,
+              photoType: photo.mimetype,
+              photoSize: photo.size,
+              announcementId: req.body.announcementId,
+            },
+            defaults: {
+              photoLink: photo.location,
+              photoType: photo.mimetype,
+              photoSize: photo.size,
+              announcementId: req.body.announcementId,
+            },
+          });
+        }
+
+        await t.commit();
+      } catch (error) {
+        res.status(422).send({ status: "Error", data: error.message });
+        await t.rollback();
+      }
+
       res.json({
         status: "success",
         data: createdAnnouncement,
@@ -32,7 +69,7 @@ module.exports = {
     } catch (error) {
       res.json({
         status: "error",
-        error: error,
+        error: error.message,
       });
     }
   },
