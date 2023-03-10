@@ -9,7 +9,14 @@ module.exports = {
   //--> List all Addresses <--
   listAllAddress: async (req, res, next) => {
     try {
-      await model.findAll(addressModel).then((address) => {
+      let phone = req.params.phone;
+      let condition = {
+        where: {
+          phone: phone,
+        },
+      };
+
+      await model.findAll(addressModel, condition).then((address) => {
         res.json({ status: "success", data: address });
       });
     } catch (error) {

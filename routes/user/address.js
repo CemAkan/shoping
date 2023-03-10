@@ -9,7 +9,7 @@ var {
 } = require("../../controllers/addressController");
 
 //--> List all addresses <--
-router.get("/list", listAllAddress);
+router.get("/list/:phone", listAllAddress);
 
 //--> Add a address <--
 router.post("/add", addAddress);
