@@ -9,7 +9,13 @@ module.exports = {
   //--> List all OldOrders <--
   listAllOldOrders: async (req, res, next) => {
     try {
-      await model.findAll(oldOrdersModel).then((oldOrders) => {
+      let phone = req.params.phone;
+      let condition = {
+        where: {
+          phone: phone,
+        },
+      };
+      await model.findAll(oldOrdersModel, condition).then((oldOrders) => {
         res.json({ status: "success", data: oldOrders });
       });
     } catch (error) {

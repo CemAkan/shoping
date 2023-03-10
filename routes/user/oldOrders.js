@@ -7,7 +7,7 @@ var {
 } = require("../../controllers/oldOrdersController");
 
 //--> List all orders <--
-router.get("/list", listAllOldOrders);
+router.get("/list/:phone", listAllOldOrders);
 
 //--> Add a order <--
 router.post("/add", addOldOrders);
