@@ -11,6 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //controllers
 var {
+  addPhoto,
   deletePhoto,
   listPhotoItem,
   listPhotoAnnouncement,
