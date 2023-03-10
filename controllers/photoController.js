@@ -64,7 +64,7 @@ module.exports = {
 
       res.json({ status: "success", data: deletedPhoto });
     } catch (error) {
-      res.status(500).json({ status: "error", data: error });
+      res.status(500).json({ status: "error", data: error.errors[0].message });
       next(error);
     }
   },
@@ -85,7 +85,7 @@ module.exports = {
     } catch (error) {
       res.json({
         status: "error",
-        error: error,
+        error: error.errors[0].message,
       });
     }
   },
@@ -106,7 +106,7 @@ module.exports = {
     } catch (error) {
       res.json({
         status: "error",
-        error: error,
+        error: error.errors[0].message,
       });
     }
   },

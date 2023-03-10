@@ -16,7 +16,7 @@ module.exports = {
     } catch (error) {
       res.json({
         status: "error",
-        error: error,
+        error: error.errors[0].message,
       });
     }
   },
@@ -33,7 +33,7 @@ module.exports = {
     } catch (error) {
       res.json({
         status: "error",
-        error: error,
+        error: error.errors[0].message,
       });
     }
   },
@@ -57,7 +57,7 @@ module.exports = {
     } catch (error) {
       res.json({
         status: "error",
-        error: error,
+        error: error.errors[0].message,
       });
     }
   },
@@ -85,7 +85,7 @@ module.exports = {
     } catch (error) {
       res.json({
         status: "error",
-        error: error,
+        error: error.errors[0].message,
       });
     }
   },
