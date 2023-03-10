@@ -3,16 +3,20 @@ var express = require("express");
 var app = express();
 var uploadImageDO = require("../../services/photoUpload");
 var router = express.Router();
+
+//body-parser
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//controllers
 var {
-  addPhoto,
   deletePhoto,
   listPhotoItem,
   listPhotoAnnouncement,
 } = require("../../controllers/photoController");
+
+//Requests
 
 //--> Add a photo <--
 router.post("/add", uploadImageDO.array("photo", 5), addPhoto);

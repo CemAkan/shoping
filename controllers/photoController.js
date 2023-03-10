@@ -6,50 +6,6 @@ const model = require("../services/modelService");
 
 // export variable
 module.exports = {
-  addPhoto: async (req, res, next) => {
-    const t = await sequelize.transaction();
-    var counter = 0;
-    try {
-      for (const photo of req.files) {
-        if (!req.body.itemId) {
-          req.body.itemId = null;
-        }
-        if (!req.body.announcementId) {
-          req.body.req.body.announcementId = null;
-        }
-
-        await model.findOrCreate(photoModel, {
-          where: {
-            photoLink: photo.location,
-            photoType: photo.mimetype,
-            photoSize: photo.size,
-            announcementId: req.body.announcementId,
-            itemId: req.body.itemId,
-          },
-          defaults: {
-            photoLink: photo.location,
-            photoType: photo.mimetype,
-            photoSize: photo.size,
-            announcementId: req.body.announcementId,
-            itemId: req.body.itemId,
-          },
-        });
-        counter++;
-      }
-
-      await t.commit();
-
-      res.json({
-        status: "success",
-        data: counter + " new photos were added.",
-      });
-    } catch (error) {
-      res.status(422).send({ status: "Error", data: error.message });
-      await t.rollback();
-      next(error);
-    }
-  },
-
   deletePhoto: async (req, res, next) => {
     const photoId = req.params.id;
     try {
