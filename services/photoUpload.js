@@ -62,7 +62,7 @@ const uploadDO = multer({
     acl: "public-read",
     key: function (request, file, cb) {
       let convertedName = Date.now() + "-" + fileName(file.originalname);
-      var fullPath = "images/items/" + convertedName;
+      var fullPath = "images/" + convertedName;
       cb(null, fullPath);
     },
   }),
