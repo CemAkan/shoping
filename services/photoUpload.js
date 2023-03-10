@@ -1,20 +1,19 @@
 // Require modules
-const aws = require("aws-sdk");
+const aws = require("aws-sdk"),
+  { S3 } = require("@aws-sdk/client-s3");
 const express = require("express");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
 require("dotenv").config();
-
 const app = express();
 
-const spacesEndpoint = new aws.Endpoint(process.env.ENDPOINT);
-const s3 = new aws.S3({
+const spacesEndpoint = new aws.Endpoint("ams3.digitaloceanspaces.com");
+const s3 = new S3({
+  region: "eu-west-3",
   endpoint: spacesEndpoint,
   accessKeyId: process.env.DO_ACCESS_KEY,
   secretAccessKey: process.env.DO_SECRET_ACCESS_KEY,
 });
-
-console.log(process.env.spacesEndpoint);
 
 const fileFilter = (req, file, cb) => {
   if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
@@ -55,7 +54,7 @@ const fileName = (originalname) => {
   return convertedName;
 };
 
-module.exports = multer({
+const uploadDO = multer({
   fileFilter,
   storage: multerS3({
     s3: s3,
@@ -63,8 +62,10 @@ module.exports = multer({
     acl: "public-read",
     key: function (request, file, cb) {
       let convertedName = Date.now() + "-" + fileName(file.originalname);
-      var fullPath = "images/" + convertedName;
+      var fullPath = "images/items/" + convertedName;
       cb(null, fullPath);
     },
   }),
 });
+
+module.exports = uploadDO;
