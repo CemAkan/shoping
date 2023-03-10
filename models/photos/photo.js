@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
   const photoMedia = sequelize.define(
-    "announcementPhoto",
+    "photo",
     {
       photoLink: {
         type: Sequelize.STRING,
@@ -12,11 +12,6 @@ module.exports = (sequelize, Sequelize) => {
 
       photoSize: {
         type: Sequelize.DOUBLE,
-      },
-
-      isStored: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
       },
     },
     {
