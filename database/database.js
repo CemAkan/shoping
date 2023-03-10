@@ -122,7 +122,7 @@ addressModel.belongsTo(deliveryDetailsModel, {
 //--> Associations with photo <--
 
 //ITEM <-> PHOTO
-itemModel.hasOne(photoModel, { foreignKey: "itemId" });
+itemModel.hasMany(photoModel, { foreignKey: "itemId" });
 photoModel.belongsTo(itemModel, { foreignKey: "itemId" });
 
 //ANNOUNCEMENTS <-> PHOTO
