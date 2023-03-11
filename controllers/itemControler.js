@@ -23,15 +23,13 @@ module.exports = {
   //--> Add a item <--
   addItem: async (req, res, next) => {
     try {
-      let body = req.body;
+      var { name, price, category_Id, description } = req.body;
       var createdItem = await model.create(itemModel, {
-        name: body.name,
-        price: body.price,
-        category_Id: body.category_Id,
-        description: body.description,
+        name: name,
+        price: price,
+        category_Id: category_Id,
+        description: description,
       });
-
-      body.itemId = createdItem.id;
 
       try {
         const t = await sequelize.transaction();
@@ -42,13 +40,13 @@ module.exports = {
               photoLink: photo.location,
               photoType: photo.mimetype,
               photoSize: photo.size,
-              itemId: req.body.itemId,
+              itemId: createdItem.id,
             },
             defaults: {
               photoLink: photo.location,
               photoType: photo.mimetype,
               photoSize: photo.size,
-              itemId: req.body.itemId,
+              itemId: createdItem.id,
             },
           });
         }
@@ -66,7 +64,7 @@ module.exports = {
     } catch (error) {
       res.json({
         status: "error",
-        error: error.errors[0].message,
+        error: error.message,
       });
     }
   },

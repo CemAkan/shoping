@@ -28,13 +28,11 @@ module.exports = {
   //--> Add a announcement <--
   addAnnouncement: async (req, res, next) => {
     try {
-      let body = req.body;
+      const { itemId, details } = req.body;
       var createdAnnouncement = await model.create(announcementsModel, {
-        details: body.details,
-        itemId: body.itemId,
+        details: details,
+        itemId: itemId,
       });
-
-      body.announcementId = createdAnnouncement.id;
 
       try {
         const t = await sequelize.transaction();
@@ -45,13 +43,13 @@ module.exports = {
               photoLink: photo.location,
               photoType: photo.mimetype,
               photoSize: photo.size,
-              announcementId: req.body.announcementId,
+              announcementId: createdAnnouncement.id,
             },
             defaults: {
               photoLink: photo.location,
               photoType: photo.mimetype,
               photoSize: photo.size,
-              announcementId: req.body.announcementId,
+              announcementId: createdAnnouncement.id,
             },
           });
         }
